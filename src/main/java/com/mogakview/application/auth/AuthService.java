@@ -5,6 +5,7 @@ import com.mogakview.domain.user.User;
 import com.mogakview.domain.user.UserRepository;
 import com.mogakview.dto.auth.AccessTokenResponse;
 import com.mogakview.dto.auth.LoginRequest;
+import com.mogakview.dto.auth.RefreshTokenResponse;
 import com.mogakview.infrasturcture.auth.JwtTokenProvider;
 import com.mogakview.infrasturcture.auth.OauthManager;
 import com.mogakview.infrasturcture.auth.OauthManagerFactory;
@@ -39,4 +40,11 @@ public class AuthService {
         return AccessTokenResponse.of(jwtTokenProvider.createAccessToken(savedUser.getId()));
     }
 
+    public Long extractUserIdByAccessToken(String accessToken) {
+        return jwtTokenProvider.extractAccessToken(accessToken);
+    }
+
+    public RefreshTokenResponse createRefreshToken(Long id) {
+        return RefreshTokenResponse.of(jwtTokenProvider.creatRefreshToken(id));
+    }
 }

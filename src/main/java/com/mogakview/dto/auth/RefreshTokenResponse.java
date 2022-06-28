@@ -5,14 +5,13 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class AccessTokenResponse {
+public class RefreshTokenResponse {
 
     private String token;
 
-    public static AccessTokenResponse of(String accessToken) {
-        return AccessTokenResponse.builder()
+    public static RefreshTokenResponse of(String accessToken) {
+        return RefreshTokenResponse.builder()
             .token(accessToken)
             .build();
     }
-
 }

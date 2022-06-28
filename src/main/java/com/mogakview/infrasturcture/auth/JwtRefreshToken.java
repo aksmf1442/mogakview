@@ -6,12 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class JwtAccessToken extends JwtToken {
+public class JwtRefreshToken extends JwtToken {
 
-    @Value("${jwt.access-token.secret-key}")
+    @Value("${jwt.refresh-token.secret-key}")
     private String secretKey;
 
-    @Value("${jwt.access-token.validTime}")
+    @Value("${jwt.refresh-token.validTime}")
     private Long validTime;
-
 }
