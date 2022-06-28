@@ -1,0 +1,35 @@
+jwt:
+  access-token:
+    secret-key: haneulkey1alkjsdljahsdfjhjkqbnmcxbvjkaghjkwermbsdjkfb
+    validTime: 3600
+
+
+google:
+  client:
+    id: 104692002195-g4hc7onroqep25u49ps94cf5gt1796bt.apps.googleusercontent.com
+    secret: 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
+    redirect-uri: http://localhost:8080/google/callback
+    grant-type: authorization_code
+  url:
+    access-token: https://oauth2.googleapis.com/token
+    profile: https://openidconnect.googleapis.com/v1/userinfo
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+    properties:
+      hibernate:
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        show_sql: true
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem://localhost/~/testdb;MODE=MYSQL
+
