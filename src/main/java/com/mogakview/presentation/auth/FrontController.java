@@ -1,5 +1,7 @@
 package com.mogakview.presentation.auth;
 
+import com.mogakview.config.auth.AppUser;
+import com.mogakview.config.auth.LoginUser;
 import com.mogakview.dto.auth.GoogleOauthTokenRequest;
 import com.mogakview.dto.auth.OauthTokenResponse;
 import lombok.NoArgsConstructor;
@@ -25,7 +27,6 @@ public class FrontController {
 
     private String RESPONSE_TYPE = "code";
 
-//    private String SCOPE = "https://www.googleapis.com/auth/drive.metadata.readonly";
     private String SCOPE = "profile";
 
     @GetMapping("/front/code/test")
@@ -43,7 +44,6 @@ public class FrontController {
     @ResponseBody
     @GetMapping("/auth/google/callback")
     public String authGoogleCallback() {
-        System.out.println(1);
         return "123";
     }
 

@@ -1,5 +1,6 @@
 package com.mogakview.application.auth;
 
+import com.mogakview.config.auth.AppUser;
 import com.mogakview.domain.user.SocialType;
 import com.mogakview.domain.user.User;
 import com.mogakview.domain.user.UserRepository;
@@ -53,4 +54,7 @@ public class AuthService {
         return jwtTokenProvider.extractUserIdByToken(token, jwtToken);
     }
 
+    public AppUser createLoginUser(Long id) {
+        return AppUser.of(id);
+    }
 }
