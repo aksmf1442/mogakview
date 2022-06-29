@@ -36,10 +36,10 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    public Long extractAccessToken(String accessToken) {
+    public Long extractUserIdByToken(String token, JwtToken jwtToken) {
         Claims claims = Jwts.parser()
-            .setSigningKey(jwtAccessToken.getSecretKey())
-            .parseClaimsJws(accessToken)
+            .setSigningKey(jwtToken.getSecretKey())
+            .parseClaimsJws(token)
             .getBody();
         return claims.get("id", Long.class);
     }

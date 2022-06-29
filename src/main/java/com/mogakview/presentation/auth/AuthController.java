@@ -4,6 +4,7 @@ import com.mogakview.application.auth.AuthService;
 import com.mogakview.dto.auth.AccessTokenResponse;
 import com.mogakview.dto.auth.LoginRequest;
 import com.mogakview.dto.auth.RefreshTokenResponse;
+import com.mogakview.infrasturcture.auth.JwtAccessToken;
 import com.mogakview.infrasturcture.auth.JwtRefreshToken;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,15 +29,30 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtRefreshToken jwtRefreshToken;
+    private final JwtAccessToken jwtAccessToken;
 
     @PostMapping("/login/{socialType}")
     public ResponseEntity<AccessTokenResponse> login(@PathVariable String socialType, @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         AccessTokenResponse accessTokenResponse = authService.createToken(socialType, loginRequest);
-        Long id = authService.extractUserIdByAccessToken(accessTokenResponse.getToken());
-        RefreshTokenResponse refreshTokenResponse = authService.createRefreshToken(id);
-        ResponseCookie refreshCookie = injectRefreshTokenToCookie(refreshTokenResponse);
-        response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+        Long userId = authService.extractUserIdByToken(accessTokenResponse.getToken(),
+            jwtAccessToken);
+        createRefreshToken(userId, response);
         return ResponseEntity.ok(accessTokenResponse);
+    }
+
+    @GetMapping("/token")
+    public ResponseEntity<AccessTokenResponse> createNewToken(@CookieValue(value = REFRESH_TOKEN_COOKIE_NAME, required = false) String refreshToken, HttpServletResponse response) {
+        System.out.println(refreshToken);
+        Long userId = authService.extractUserIdByToken(refreshToken, jwtRefreshToken);
+        AccessTokenResponse newAccessTokenResponse = authService.createNewAccessToken(userId);
+        createRefreshToken(userId, response);
+        return ResponseEntity.ok(newAccessTokenResponse);
+    }
+
+    private void createRefreshToken(Long userId, HttpServletResponse response) {
+        RefreshTokenResponse newRefreshTokenResponse = authService.createRefreshToken(userId);
+        ResponseCookie refreshCookie = injectRefreshTokenToCookie(newRefreshTokenResponse);
+        response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
     }
 
     private ResponseCookie injectRefreshTokenToCookie(RefreshTokenResponse refreshTokenResponse) {

@@ -3,7 +3,7 @@ jwt:
     secret-key: haneulkey1alkjsdljahsdfjhjkqbnmcxbvjkaghjkwermbsdjkfb
     validTime: 3600
   refresh-token:
-    secret-key: haneulkey1alkjsdljahsdfjhjkqbnmcxbvjkaghjkwermbsdjkfb
+    secret-key: haneulkey1alkjsdljahsdfjhjkqbnmcxbvjkaghjkwermbsdjasd
     validTime: 360000
 
 
