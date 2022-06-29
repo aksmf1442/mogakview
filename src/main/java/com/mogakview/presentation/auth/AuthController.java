@@ -6,7 +6,6 @@ import com.mogakview.dto.auth.LoginRequest;
 import com.mogakview.dto.auth.RefreshTokenResponse;
 import com.mogakview.infrasturcture.auth.JwtAccessToken;
 import com.mogakview.infrasturcture.auth.JwtRefreshToken;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -32,7 +31,8 @@ public class AuthController {
     private final JwtAccessToken jwtAccessToken;
 
     @PostMapping("/login/{socialType}")
-    public ResponseEntity<AccessTokenResponse> login(@PathVariable String socialType, @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<AccessTokenResponse> login(@PathVariable String socialType,
+        @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         AccessTokenResponse accessTokenResponse = authService.createToken(socialType, loginRequest);
         Long userId = authService.extractUserIdByToken(accessTokenResponse.getToken(),
             jwtAccessToken);
@@ -41,7 +41,9 @@ public class AuthController {
     }
 
     @GetMapping("/token")
-    public ResponseEntity<AccessTokenResponse> createNewToken(@CookieValue(value = REFRESH_TOKEN_COOKIE_NAME, required = false) String refreshToken, HttpServletResponse response) {
+    public ResponseEntity<AccessTokenResponse> createNewToken(
+        @CookieValue(value = REFRESH_TOKEN_COOKIE_NAME) String refreshToken,
+        HttpServletResponse response) {
         System.out.println(refreshToken);
         Long userId = authService.extractUserIdByToken(refreshToken, jwtRefreshToken);
         AccessTokenResponse newAccessTokenResponse = authService.createNewAccessToken(userId);
@@ -58,11 +60,28 @@ public class AuthController {
     private ResponseCookie injectRefreshTokenToCookie(RefreshTokenResponse refreshTokenResponse) {
         return ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, refreshTokenResponse.getToken())
             .sameSite("Lax")
-            .secure(true)
+            // local에선 편의를 위해 꺼두기
+//            .secure(true)
             .httpOnly(true)
             .path("/")
             .maxAge(jwtRefreshToken.getValidTime())
             .build();
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        removeRefreshTokenToCookie(response);
+        return ResponseEntity.noContent().build();
+    }
+
+    private void removeRefreshTokenToCookie(HttpServletResponse response) {
+        ResponseCookie removeRefreshToken = ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, "")
+            .sameSite("Lax")
+            .secure(true)
+            .httpOnly(true)
+            .path("/")
+            .maxAge(0)
+            .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, removeRefreshToken.toString());
+    }
 }
