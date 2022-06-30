@@ -1,5 +1,7 @@
 package com.mogakview.domain.user;
 
+import com.mogakview.exception.auth.SocialTypeNotFoundException;
+
 public enum SocialType {
     GOOGLE, KAKAO;
 
@@ -9,8 +11,6 @@ public enum SocialType {
                 return socialType;
             }
         }
-
-        // Custom Exception 추가할 예정
-        throw new RuntimeException();
+        throw new SocialTypeNotFoundException();
     }
 }

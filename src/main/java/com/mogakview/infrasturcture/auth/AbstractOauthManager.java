@@ -5,6 +5,8 @@ import com.mogakview.domain.user.User;
 import com.mogakview.dto.auth.OauthTokenRequest;
 import com.mogakview.dto.auth.OauthTokenResponse;
 import com.mogakview.dto.auth.UserDetailResponse;
+import com.mogakview.exception.auth.ProfileGetApiFailedException;
+import com.mogakview.exception.auth.AccessTokenPostApiFailedException;
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,8 +45,7 @@ public abstract class AbstractOauthManager implements OauthManager{
             .headers(header -> header.setBearerAuth(oauthTokenResponse.getAccessToken()))
             .exchangeToMono(response -> {
                 if (!response.statusCode().equals(HttpStatus.OK)) {
-                    // custom 에러 만들 예정
-                    throw new RuntimeException();
+                    throw new ProfileGetApiFailedException();
                 }
                 return response.bodyToMono(JSONObject.class);
             });
@@ -72,7 +73,7 @@ public abstract class AbstractOauthManager implements OauthManager{
             .exchangeToMono(response -> {
                 if (!response.statusCode().equals(HttpStatus.OK)) {
                     // custom 에러 만들 예정
-                    throw new RuntimeException();
+                    throw new AccessTokenPostApiFailedException();
                 }
                 return response.bodyToMono(OauthTokenResponse.class);
             });

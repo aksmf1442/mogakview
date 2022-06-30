@@ -42,9 +42,8 @@ public class AuthController {
 
     @GetMapping("/token")
     public ResponseEntity<AccessTokenResponse> createNewToken(
-        @CookieValue(value = REFRESH_TOKEN_COOKIE_NAME) String refreshToken,
+        @CookieValue(value = REFRESH_TOKEN_COOKIE_NAME, required = false) String refreshToken,
         HttpServletResponse response) {
-        System.out.println(refreshToken);
         Long userId = authService.extractUserIdByToken(refreshToken, jwtRefreshToken);
         AccessTokenResponse newAccessTokenResponse = authService.createNewAccessToken(userId);
         createRefreshToken(userId, response);

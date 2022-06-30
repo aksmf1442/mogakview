@@ -1,8 +1,8 @@
 package com.mogakview.config.auth;
 
 import com.mogakview.application.auth.AuthService;
+import com.mogakview.exception.auth.BearerDoesntExistedException;
 import com.mogakview.infrasturcture.auth.JwtAccessToken;
-import com.nimbusds.oauth2.sdk.token.AccessToken;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +41,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
             return loginUser;
         }
 
-        // 커스텀 에러 추가 예정
-        throw new RuntimeException();
+        throw new BearerDoesntExistedException();
     }
 
     private boolean checkBearer(String authorization) {

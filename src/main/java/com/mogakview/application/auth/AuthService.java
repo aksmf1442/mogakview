@@ -57,4 +57,5 @@ public class AuthService {
     public AppUser createLoginUser(Long id) {
         return AppUser.of(id);
     }
+
 }
