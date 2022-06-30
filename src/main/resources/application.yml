@@ -18,6 +18,16 @@ google:
     access-token: https://oauth2.googleapis.com/token
     profile: https://openidconnect.googleapis.com/v1/userinfo
 
+kakao:
+  client:
+    id: 24591f129d904802d5bfe609be909b08
+    secret: 93PKgYL9vRAis3kjCx5PCGWEAFja6QWm
+    redirect-uri: http://localhost:8080/kakao/callback
+    grant-type: authorization_code
+  url:
+    access-token: https://kauth.kakao.com/oauth/token
+    profile:  https://kapi.kakao.com/v2/user/me
+
 spring:
   jpa:
     hibernate:

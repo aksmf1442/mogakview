@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GoogleOauthTokenRequest implements OauthTokenRequest{
+public class KaKaoOauthTokenRequest implements OauthTokenRequest{
 
     private String code;
 

@@ -1,7 +1,7 @@
 package com.mogakview.domain.user;
 
 public enum SocialType {
-    GOOGLE;
+    GOOGLE, KAKAO;
 
     public static SocialType of(String input) {
         for (SocialType socialType : values()) {

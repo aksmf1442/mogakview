@@ -9,10 +9,15 @@ import org.springframework.stereotype.Component;
 public class OauthManagerFactory {
 
     private final GoogleOauthManager googleOauthManager;
+    private final KakaoOauthManager kakaoOauthManager;
 
     public OauthManager findOauthManagerBySocialType(SocialType socialType) {
         if (socialType == SocialType.GOOGLE) {
             return googleOauthManager;
+        }
+
+        if (socialType == SocialType.KAKAO) {
+            return kakaoOauthManager;
         }
 
         // custom 에러 추가할 예정
