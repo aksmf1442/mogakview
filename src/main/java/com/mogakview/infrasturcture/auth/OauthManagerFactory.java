@@ -1,6 +1,7 @@
 package com.mogakview.infrasturcture.auth;
 
 import com.mogakview.domain.user.SocialType;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -8,19 +9,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OauthManagerFactory {
 
-    private final GoogleOauthManager googleOauthManager;
-    private final KakaoOauthManager kakaoOauthManager;
+    private final List<OauthManager> oauthManagers;
 
     public OauthManager findOauthManagerBySocialType(SocialType socialType) {
-        if (socialType == SocialType.GOOGLE) {
-            return googleOauthManager;
-        }
-
-        if (socialType == SocialType.KAKAO) {
-            return kakaoOauthManager;
-        }
-
-        // custom 에러 추가할 예정
-        throw new RuntimeException();
+        return oauthManagers.stream()
+            .filter(oauthManager -> oauthManager.checkSameSocialType(socialType))
+            .findFirst()
+            // 사용자 에러 추가 예정
+            .orElseThrow(RuntimeException::new);
     }
 }

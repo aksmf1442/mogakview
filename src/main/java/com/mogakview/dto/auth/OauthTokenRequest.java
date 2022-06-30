@@ -1,5 +1,22 @@
 package com.mogakview.dto.auth;
 
-public interface OauthTokenRequest {
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+@Builder
+public class OauthTokenRequest {
+
+    private String code;
+
+    private String clientId;
+
+    private String clientSecret;
+
+    private String redirectUri;
+
+    private String grantType;
 }

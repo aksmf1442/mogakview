@@ -37,11 +37,7 @@ public class AuthService {
         if (findUser.isPresent()) {
             return AccessTokenResponse.of(jwtTokenProvider.createAccessToken(oauthUser.getId()));
         }
-        System.out.println(oauthUser.getSocialId());
-        System.out.println(oauthUser.getUserName());
-        System.out.println(oauthUser.getProfileUrl());
-        System.out.println(oauthUser.getRole());
-        System.out.println(oauthUser.getId());
+
         User savedUser = userRepository.save(oauthUser);
         return AccessTokenResponse.of(jwtTokenProvider.createAccessToken(savedUser.getId()));
     }

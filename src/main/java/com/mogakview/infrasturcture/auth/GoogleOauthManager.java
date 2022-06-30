@@ -1,39 +1,18 @@
 package com.mogakview.infrasturcture.auth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.mogakview.domain.user.User;
-import com.mogakview.dto.auth.GoogleOauthTokenRequest;
-import com.mogakview.dto.auth.GoogleUserDetailResponse;
+import com.mogakview.domain.user.SocialType;
 import com.mogakview.dto.auth.OauthTokenRequest;
-import com.mogakview.dto.auth.OauthTokenResponse;
 import com.mogakview.dto.auth.UserDetailResponse;
-import com.nimbusds.oauth2.sdk.TokenResponse;
-import java.nio.charset.Charset;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 @Component
-public class GoogleOauthManager implements OauthManager {
+public class GoogleOauthManager extends AbstractOauthManager {
 
-    private final WebClient webClient = WebClient.create();
+    private final String JSON_PROPERTY_ID = "sub";
+    private final String JSON_PROPERTY_NAME = "name";
+    private final String JSON_PROPERTY_PICTURE = "picture";
 
     @Value("${google.client.id}")
     private String clientId;
@@ -54,45 +33,23 @@ public class GoogleOauthManager implements OauthManager {
     private String profileUrl;
 
     @Override
-    public User findUserDetailByOauthCode(String code) {
-        OauthTokenResponse oauthTokenResponse = getAccessTokenByOauthCode(code);
-        Mono<UserDetailResponse> userDetailResponseMono = webClient
-            .get()
-            .uri(profileUrl)
-            .headers(header -> header.setBearerAuth(oauthTokenResponse.getAccessToken()))
-            .exchangeToMono(response -> {
-                // custom 에러 만들 예정
-                if (!response.statusCode().equals(HttpStatus.OK)) {
-                    throw new RuntimeException();
-                }
-                return response.bodyToMono(GoogleUserDetailResponse.class);
-            });
-
-        UserDetailResponse userDetailResponse = userDetailResponseMono.block();
-        return userDetailResponse.toUser();
+    protected String getProfile() {
+        return profileUrl;
     }
 
-    private OauthTokenResponse getAccessTokenByOauthCode(String code) {
-        OauthTokenRequest oauthTokenRequest = createOauthTokenRequest(code);
-        Mono<OauthTokenResponse> oauthTokenResponseMono = webClient
-            .post()
-            .uri(accessTokenUrl)
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(oauthTokenRequest)
-            .exchangeToMono(response -> {
-                if (!response.statusCode().equals(HttpStatus.OK)) {
-                    // custom 에러 만들 예정
-                    throw new RuntimeException();
-                }
-                return response.bodyToMono(OauthTokenResponse.class);
-            });
-
-        OauthTokenResponse oauthTokenResponse = oauthTokenResponseMono.block();
-        return oauthTokenResponse;
+    @Override
+    protected String getAccessTokenUrl() {
+        return accessTokenUrl;
     }
 
-    private OauthTokenRequest createOauthTokenRequest(String code) {
-        return GoogleOauthTokenRequest.builder()
+    @Override
+    public boolean checkSameSocialType(SocialType socialType) {
+        return SocialType.GOOGLE == socialType;
+    }
+
+    @Override
+    protected OauthTokenRequest createOauthTokenRequest(String code) {
+        return OauthTokenRequest.builder()
             .code(code)
             .clientId(clientId)
             .clientSecret(clientSecret)
@@ -101,5 +58,11 @@ public class GoogleOauthManager implements OauthManager {
             .build();
     }
 
-
+    @Override
+    protected UserDetailResponse extractUserDetailByJson(JSONObject jsonObject) {
+        String socialId = jsonObject.get(JSON_PROPERTY_ID).toString();
+        String nickname = jsonObject.get(JSON_PROPERTY_NAME).toString();
+        String thumbnailImageUrl = jsonObject.get(JSON_PROPERTY_PICTURE).toString();
+        return UserDetailResponse.of(socialId, nickname, thumbnailImageUrl);
+    }
 }
