@@ -11,7 +11,6 @@ public class QnaBookRequest {
 
     private boolean opened;
 
-
     public QnaBook toQnaBook(User user) {
         return QnaBook.builder()
             .user(user)

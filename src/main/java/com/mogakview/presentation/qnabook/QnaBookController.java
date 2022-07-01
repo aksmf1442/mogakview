@@ -19,7 +19,7 @@ public class QnaBookController {
 
     private final QnaBookService qnaBookService;
 
-    @PostMapping("/qnaBook")
+    @PostMapping("")
     public ResponseEntity<QnaBookResponse> createQnaBook(@RequestBody QnaBookRequest qnaBookRequest, @LoginUser
         AppUser loginUser) {
         QnaBookResponse qnaBookResponse = qnaBookService.createQnaBook(qnaBookRequest, loginUser);

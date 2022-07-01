@@ -8,14 +8,14 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @Builder
-public class TagResponse {
+public class QnaBookTagResponse {
 
     private Long id;
 
     private String name;
 
-    public static TagResponse of(QnaBookTag qnaBookTag) {
-        return TagResponse.builder()
+    public static QnaBookTagResponse of(QnaBookTag qnaBookTag) {
+        return QnaBookTagResponse.builder()
             .id(qnaBookTag.getId())
             .name(qnaBookTag.getTag().getName())
             .build();

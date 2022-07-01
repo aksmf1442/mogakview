@@ -45,6 +45,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     }
 
     private boolean checkBearer(String authorization) {
+        // null 포인트 exception 나는중 custom 에러 만들자
         return authorization.startsWith(BEARER);
     }
 }
