@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class QnaBookService {
 
     private final UserRepository userRepository;
@@ -24,7 +26,18 @@ public class QnaBookService {
         Optional<User> findUser = userRepository.findById(loginUser.getId());
         User user = findUser.orElseThrow(RuntimeException::new);
         QnaBook savedQnaBook = qnaBookRepository.save(qnaBookRequest.toQnaBook(user));
-        List<QnaBookTag> qnaBookTags = savedQnaBook.getQnaBookTags();
-        return QnaBookResponse.of(savedQnaBook, qnaBookTags);
+        return createQnaBookResponse(savedQnaBook);
+    }
+
+    @Transactional(readOnly = true)
+    public QnaBookResponse findQnaBookById(Long qnaBookId) {
+        Optional<QnaBook> findQnaBook = qnaBookRepository.findById(qnaBookId);
+        QnaBook qnaBook = findQnaBook.orElseThrow(RuntimeException::new);
+        return createQnaBookResponse(qnaBook);
+    }
+
+    private QnaBookResponse createQnaBookResponse(QnaBook qnaBook) {
+        List<QnaBookTag> qnaBookTags = qnaBook.getQnaBookTags();
+        return QnaBookResponse.of(qnaBook, qnaBookTags);
     }
 }

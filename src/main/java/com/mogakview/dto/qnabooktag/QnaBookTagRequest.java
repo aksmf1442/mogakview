@@ -5,6 +5,5 @@ import lombok.Getter;
 @Getter
 public class QnaBookTagRequest {
 
-    private String tag;
-
+    private String name;
 }

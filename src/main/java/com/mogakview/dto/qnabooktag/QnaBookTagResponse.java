@@ -17,7 +17,7 @@ public class QnaBookTagResponse {
     public static QnaBookTagResponse of(QnaBookTag qnaBookTag) {
         return QnaBookTagResponse.builder()
             .id(qnaBookTag.getId())
-            .name(qnaBookTag.getTag().getName())
+            .name(qnaBookTag.getName())
             .build();
     }
 }

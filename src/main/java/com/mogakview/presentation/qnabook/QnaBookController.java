@@ -7,6 +7,8 @@ import com.mogakview.dto.qnabook.QnaBookRequest;
 import com.mogakview.dto.qnabook.QnaBookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,16 @@ public class QnaBookController {
     private final QnaBookService qnaBookService;
 
     @PostMapping("")
-    public ResponseEntity<QnaBookResponse> createQnaBook(@RequestBody QnaBookRequest qnaBookRequest, @LoginUser
-        AppUser loginUser) {
+    public ResponseEntity<QnaBookResponse> createQnaBook(@RequestBody QnaBookRequest qnaBookRequest,
+        @LoginUser
+            AppUser loginUser) {
         QnaBookResponse qnaBookResponse = qnaBookService.createQnaBook(qnaBookRequest, loginUser);
+        return ResponseEntity.ok(qnaBookResponse);
+    }
+
+    @GetMapping("/{qnaBookId}")
+    public ResponseEntity<QnaBookResponse> findQnaBook(@PathVariable Long qnaBookId) {
+        QnaBookResponse qnaBookResponse = qnaBookService.findQnaBookById(qnaBookId);
         return ResponseEntity.ok(qnaBookResponse);
     }
 }
