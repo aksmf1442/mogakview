@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class QnA extends BaseEntity {
+public class Qna extends BaseEntity {
 
     @Column(nullable = false)
     private String question;
@@ -30,7 +30,7 @@ public class QnA extends BaseEntity {
     private boolean deleted;
 
     @Builder
-    public QnA(String question, String answer, QnaBook qnaBook, boolean deleted) {
+    public Qna(String question, String answer, QnaBook qnaBook, boolean deleted) {
         this.question = question;
         this.answer = answer;
         this.qnaBook = qnaBook;

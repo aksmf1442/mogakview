@@ -1,6 +1,7 @@
 package com.mogakview.config.auth;
 
 import com.mogakview.domain.user.Role;
+import com.mogakview.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +19,11 @@ public class AppUser {
             .id(id)
             .role(Role.USER)
             .build();
+    }
+
+    public void checkSameUser(User user) {
+        if (!user.checkSameUser(this.getId())) {
+            throw new RuntimeException();
+        }
     }
 }

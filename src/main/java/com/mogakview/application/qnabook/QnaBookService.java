@@ -11,7 +11,6 @@ import com.mogakview.dto.qnabook.DeleteQnaBookResponse;
 import com.mogakview.dto.qnabook.QnaBookRequest;
 import com.mogakview.dto.qnabook.QnaBookResponse;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,8 @@ public class QnaBookService {
     private final QnaBookTagRepository qnaBookTagRepository;
 
     public QnaBookResponse createQnaBook(QnaBookRequest qnaBookRequest, AppUser appUser) {
-        Optional<User> findUser = userRepository.findById(appUser.getId());
-        User user = findUser.orElseThrow(RuntimeException::new);
+        User user = userRepository.findById(appUser.getId())
+            .orElseThrow(RuntimeException::new);
         QnaBook savedQnaBook = qnaBookRepository.save(qnaBookRequest.toQnaBook(user));
         createQnaBookTags(qnaBookRequest, savedQnaBook);
         return createQnaBookResponse(savedQnaBook);
@@ -46,7 +45,7 @@ public class QnaBookService {
 
     @Transactional(readOnly = true)
     public QnaBookResponse findQnaBookById(Long id) {
-        QnaBook qnaBook = extractQnaBookById(id);
+        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(RuntimeException::new);
         return createQnaBookResponse(qnaBook);
     }
 
@@ -56,16 +55,11 @@ public class QnaBookService {
     }
 
     public QnaBookResponse updateQnaBook(Long id, QnaBookRequest qnaBookRequest, AppUser appUser) {
-        QnaBook qnaBook = extractQnaBookById(id);
-        validateUser(qnaBook.getUser(), appUser);
+        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(RuntimeException::new);
+        appUser.checkSameUser(qnaBook.getUser());
         List<QnaBookTag> qnaBookTags = updateQnaBookTagsOfQnaBook(
             qnaBookRequest, qnaBook);
         return QnaBookResponse.of(qnaBook, qnaBookTags);
-    }
-
-    private QnaBook extractQnaBookById(Long id) {
-        Optional<QnaBook> findQnaBook = qnaBookRepository.findById(id);
-        return findQnaBook.orElseThrow(RuntimeException::new);
     }
 
     private List<QnaBookTag> updateQnaBookTagsOfQnaBook(QnaBookRequest qnaBookRequest, QnaBook qnaBook) {
@@ -75,18 +69,11 @@ public class QnaBookService {
         return qnaBookTags;
     }
 
-    private void validateUser(User user, AppUser appUser) {
-        if (!user.checkSameUser(appUser.getId())) {
-            // custom 에러 추가 예정
-            throw new RuntimeException();
-        }
-    }
-
     public DeleteQnaBookResponse deleteQnaBook(Long id, AppUser appUser) {
-        QnaBook qnaBook = extractQnaBookById(id);
-        Optional<User> findUser = userRepository.findById(qnaBook.getUser().getId());
-        User user = findUser.orElseThrow(RuntimeException::new);
-        validateUser(user, appUser);
+        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(RuntimeException::new);
+        User user = userRepository.findById(qnaBook.getUser().getId())
+            .orElseThrow(RuntimeException::new);;
+        appUser.checkSameUser(user);
         qnaBookRepository.deleteById(id);
         return DeleteQnaBookResponse.of(id);
     }

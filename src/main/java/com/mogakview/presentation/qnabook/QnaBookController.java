@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/qnaBook")
+@RequestMapping("/qnaBooks")
 public class QnaBookController {
 
     private final QnaBookService qnaBookService;
