@@ -3,10 +3,12 @@ package com.mogakview.presentation.qnabook;
 import com.mogakview.application.qnabook.QnaBookService;
 import com.mogakview.config.auth.AppUser;
 import com.mogakview.config.auth.LoginUser;
+import com.mogakview.dto.qnabook.DeleteQnaBookResponse;
 import com.mogakview.dto.qnabook.QnaBookRequest;
 import com.mogakview.dto.qnabook.QnaBookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +42,13 @@ public class QnaBookController {
     public ResponseEntity<QnaBookResponse> updateQnaBook(@RequestBody QnaBookRequest qnaBookRequest,
         @PathVariable Long id, @LoginUser AppUser appUser) {
         QnaBookResponse qnaBookResponse = qnaBookService.updateQnaBook(id, qnaBookRequest, appUser);
+        return ResponseEntity.ok(qnaBookResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DeleteQnaBookResponse> deleteQnaBook(@PathVariable Long id,
+        @LoginUser AppUser appUser) {
+        DeleteQnaBookResponse qnaBookResponse = qnaBookService.deleteQnaBook(id, appUser);
         return ResponseEntity.ok(qnaBookResponse);
     }
 }

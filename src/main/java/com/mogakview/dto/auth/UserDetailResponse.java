@@ -16,11 +16,15 @@ public class UserDetailResponse {
 
     private String profileUrl;
 
-    public static UserDetailResponse of(String socialId, String nickname, String thumbnailImageUrl) {
+    private SocialType socialType;
+
+    public static UserDetailResponse of(String socialId, String nickname, String thumbnailImageUrl,
+        SocialType socialType) {
         return UserDetailResponse.builder()
             .socialId(socialId)
             .userName(nickname)
             .profileUrl(thumbnailImageUrl)
+            .socialType(socialType)
             .build();
     }
 
@@ -30,7 +34,7 @@ public class UserDetailResponse {
             .userName(userName)
             .profileUrl(profileUrl)
             .role(Role.USER)
-            .socialType(SocialType.KAKAO)
+            .socialType(socialType)
             .build();
     }
 }

@@ -63,6 +63,6 @@ public class GoogleOauthManager extends AbstractOauthManager {
         String socialId = jsonObject.get(JSON_PROPERTY_ID).toString();
         String nickname = jsonObject.get(JSON_PROPERTY_NAME).toString();
         String thumbnailImageUrl = jsonObject.get(JSON_PROPERTY_PICTURE).toString();
-        return UserDetailResponse.of(socialId, nickname, thumbnailImageUrl);
+        return UserDetailResponse.of(socialId, nickname, thumbnailImageUrl, SocialType.GOOGLE);
     }
 }

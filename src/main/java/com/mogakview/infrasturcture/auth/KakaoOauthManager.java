@@ -70,6 +70,6 @@ public class KakaoOauthManager extends AbstractOauthManager {
         String socialId = jsonObject.get(JSON_PROPERTY_ID).toString();
         String nickname = profile.get(JSON_PROPERTY_NAME).toString();
         String thumbnailImageUrl = profile.get(JSON_PROPERTY_PICTURE).toString();
-        return UserDetailResponse.of(socialId, nickname, thumbnailImageUrl);
+        return UserDetailResponse.of(socialId, nickname, thumbnailImageUrl, SocialType.KAKAO);
     }
 }
