@@ -33,4 +33,8 @@ public class QnaBookTag extends BaseEntity {
             .qnaBook(qnaBook)
             .build();
     }
+
+    public void updateQnaBook(QnaBook qnaBook) {
+        this.qnaBook = qnaBook;
+    }
 }

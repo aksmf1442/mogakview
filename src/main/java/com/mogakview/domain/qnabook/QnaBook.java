@@ -3,6 +3,7 @@ package com.mogakview.domain.qnabook;
 import com.mogakview.domain.BaseEntity;
 import com.mogakview.domain.qnabooktag.QnaBookTag;
 import com.mogakview.domain.user.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ public class QnaBook extends BaseEntity {
     private boolean deleted;
 
     @OneToMany(mappedBy = "qnaBook", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<QnaBookTag> qnaBookTags;
+    private List<QnaBookTag> qnaBookTags = new ArrayList<>();
 
     @Builder
     public QnaBook(String title, User user, boolean opened, boolean deleted) {
@@ -44,7 +45,15 @@ public class QnaBook extends BaseEntity {
         this.deleted = deleted;
     }
 
-    public void setQnaBookTags(List<QnaBookTag> qnaBookTags) {
-        this.qnaBookTags = qnaBookTags;
+    public void updateWithQnaBookTags(String title, boolean opened, List<QnaBookTag> qnaBookTags) {
+        this.title = title;
+        this.opened = opened;
+        updateQnaBookTags(qnaBookTags);
+    }
+
+    public void updateQnaBookTags(List<QnaBookTag> qnaBookTags) {
+        this.qnaBookTags.clear();
+        this.qnaBookTags.addAll(qnaBookTags);
+        qnaBookTags.forEach(qnaBookTag -> qnaBookTag.updateQnaBook(this));
     }
 }

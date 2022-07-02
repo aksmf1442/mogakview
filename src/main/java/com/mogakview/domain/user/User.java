@@ -42,4 +42,8 @@ public class User extends BaseEntity {
         this.role = role;
         this.profileUrl = profileUrl;
     }
+
+    public boolean checkSameUser(Long id) {
+        return this.getId() == id;
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +30,16 @@ public class QnaBookController {
         return ResponseEntity.ok(qnaBookResponse);
     }
 
-    @GetMapping("/{qnaBookId}")
-    public ResponseEntity<QnaBookResponse> findQnaBook(@PathVariable Long qnaBookId) {
-        QnaBookResponse qnaBookResponse = qnaBookService.findQnaBookById(qnaBookId);
+    @GetMapping("/{id}")
+    public ResponseEntity<QnaBookResponse> findQnaBook(@PathVariable Long id) {
+        QnaBookResponse qnaBookResponse = qnaBookService.findQnaBookById(id);
+        return ResponseEntity.ok(qnaBookResponse);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<QnaBookResponse> updateQnaBook(@RequestBody QnaBookRequest qnaBookRequest,
+        @PathVariable Long id, @LoginUser AppUser appUser) {
+        QnaBookResponse qnaBookResponse = qnaBookService.updateQnaBook(id, qnaBookRequest, appUser);
         return ResponseEntity.ok(qnaBookResponse);
     }
 }
