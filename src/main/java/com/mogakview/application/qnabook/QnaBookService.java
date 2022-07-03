@@ -74,7 +74,7 @@ public class QnaBookService {
         User user = userRepository.findById(qnaBook.getUser().getId())
             .orElseThrow(RuntimeException::new);
         appUser.checkSameUser(user);
-        qnaBookRepository.deleteById(id);
+        qnaBook.delete();
         return DeleteQnaBookResponse.of(id);
     }
 }

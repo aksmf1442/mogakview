@@ -21,20 +21,28 @@ public class QnaBookTag extends BaseEntity {
     @JoinColumn(name="qna_book_id", nullable = false)
     private QnaBook qnaBook;
 
+    private boolean deleted;
+
     @Builder
-    public QnaBookTag(QnaBook qnaBook, String name) {
+    public QnaBookTag(QnaBook qnaBook, String name, boolean deleted) {
         this.name = name;
         this.qnaBook = qnaBook;
+        this.deleted = deleted;
     }
 
     public static QnaBookTag of(QnaBook qnaBook, String name) {
         return QnaBookTag.builder()
             .name(name)
             .qnaBook(qnaBook)
+            .deleted(false)
             .build();
     }
 
     public void updateQnaBook(QnaBook qnaBook) {
         this.qnaBook = qnaBook;
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 }

@@ -60,4 +60,10 @@ public class QnaBook extends BaseEntity {
         this.qnaBookTags.addAll(qnaBookTags);
         qnaBookTags.forEach(qnaBookTag -> qnaBookTag.updateQnaBook(this));
     }
+
+    public void delete() {
+        this.deleted = true;
+        qnas.forEach(Qna::delete);
+        qnaBookTags.forEach(QnaBookTag::delete);
+    }
 }
