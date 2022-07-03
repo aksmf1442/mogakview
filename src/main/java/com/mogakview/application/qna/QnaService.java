@@ -7,6 +7,7 @@ import com.mogakview.domain.qnabook.QnaBook;
 import com.mogakview.domain.qnabook.QnaBookRepository;
 import com.mogakview.dto.qna.QnaRequest;
 import com.mogakview.dto.qna.QnaResponse;
+import com.mogakview.dto.qna.UpdateQnaRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,5 +27,13 @@ public class QnaService {
         Qna qna = qnaRequest.toQna(qnaBook);
         Qna savedQna = qnaRepository.save(qna);
         return QnaResponse.of(savedQna);
+    }
+
+    public QnaResponse updateQna(Long id, UpdateQnaRequest qnaRequest) {
+        Qna qna = qnaRepository.findById(id)
+            .orElseThrow(RuntimeException::new);
+        qna.update(qnaRequest.getQuestion(), qnaRequest.getAnswer());
+        QnaResponse qnaResponse = QnaResponse.of(qna);
+        return qnaResponse;
     }
 }

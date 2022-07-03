@@ -36,4 +36,9 @@ public class Qna extends BaseEntity {
         this.qnaBook = qnaBook;
         this.deleted = deleted;
     }
+
+    public void update(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
+    }
 }
