@@ -8,8 +8,10 @@ import com.mogakview.domain.qnabooktag.QnaBookTagRepository;
 import com.mogakview.domain.user.User;
 import com.mogakview.domain.user.UserRepository;
 import com.mogakview.dto.qnabook.DeleteQnaBookResponse;
+import com.mogakview.dto.qnabook.LimitQnaBooksRequest;
 import com.mogakview.dto.qnabook.QnaBookRequest;
 import com.mogakview.dto.qnabook.QnaBookResponse;
+import com.mogakview.dto.qnabook.LimitQnaBooksResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +64,8 @@ public class QnaBookService {
         return QnaBookResponse.of(qnaBook, qnaBookTags);
     }
 
-    private List<QnaBookTag> updateQnaBookTagsOfQnaBook(QnaBookRequest qnaBookRequest, QnaBook qnaBook) {
+    private List<QnaBookTag> updateQnaBookTagsOfQnaBook(QnaBookRequest qnaBookRequest,
+        QnaBook qnaBook) {
         List<QnaBookTag> qnaBookTags = createQnaBookTags(qnaBookRequest, qnaBook);
         qnaBook.updateWithQnaBookTags(qnaBookRequest.getTitle(), qnaBookRequest.isOpened(),
             qnaBookTags);
@@ -76,5 +79,13 @@ public class QnaBookService {
         appUser.checkSameUser(user);
         qnaBook.delete();
         return DeleteQnaBookResponse.of(id);
+    }
+
+    public LimitQnaBooksResponse findLimitQnaBooks(LimitQnaBooksRequest qnaBooksRequest) {
+        QnaBook qnaBook = qnaBookRepository.findById(qnaBooksRequest.getId())
+            .orElseThrow(RuntimeException::new);
+        List<QnaBook> qnaBooks = qnaBookRepository.findLimitQnaBooks(qnaBook,
+            qnaBooksRequest.getLimit());
+        return LimitQnaBooksResponse.of(qnaBooks);
     }
 }
