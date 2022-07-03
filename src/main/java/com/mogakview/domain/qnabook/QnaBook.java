@@ -1,6 +1,7 @@
 package com.mogakview.domain.qnabook;
 
 import com.mogakview.domain.BaseEntity;
+import com.mogakview.domain.qna.Qna;
 import com.mogakview.domain.qnabooktag.QnaBookTag;
 import com.mogakview.domain.user.User;
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class QnaBook extends BaseEntity {
 
     @OneToMany(mappedBy = "qnaBook", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<QnaBookTag> qnaBookTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "qnaBook")
+    private List<Qna> qnas = new ArrayList<>();
 
     @Builder
     public QnaBook(String title, User user, boolean opened, boolean deleted) {

@@ -5,6 +5,7 @@ import com.mogakview.domain.qna.Qna;
 import com.mogakview.domain.qna.QnaRepository;
 import com.mogakview.domain.qnabook.QnaBook;
 import com.mogakview.domain.qnabook.QnaBookRepository;
+import com.mogakview.dto.qna.DeleteQnaResponse;
 import com.mogakview.dto.qna.QnaRequest;
 import com.mogakview.dto.qna.QnaResponse;
 import com.mogakview.dto.qna.UpdateQnaRequest;
@@ -33,7 +34,15 @@ public class QnaService {
         Qna qna = qnaRepository.findById(id)
             .orElseThrow(RuntimeException::new);
         qna.update(qnaRequest.getQuestion(), qnaRequest.getAnswer());
-        QnaResponse qnaResponse = QnaResponse.of(qna);
-        return qnaResponse;
+
+        return QnaResponse.of(qna);
+    }
+
+    public DeleteQnaResponse deleteQnaById(Long id, AppUser appUser) {
+        Qna qna = qnaRepository.findById(id)
+            .orElseThrow(RuntimeException::new);
+        appUser.checkSameUser(qna.getQnaBook().getUser());
+        qna.delete();
+        return DeleteQnaResponse.of(id);
     }
 }

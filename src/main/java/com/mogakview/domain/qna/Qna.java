@@ -41,4 +41,9 @@ public class Qna extends BaseEntity {
         this.question = question;
         this.answer = answer;
     }
+
+    public void delete() {
+        this.deleted = true;
+        qnaBook.getQnas().remove(this);
+    }
 }
