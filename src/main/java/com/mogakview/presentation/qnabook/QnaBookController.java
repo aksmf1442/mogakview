@@ -5,9 +5,9 @@ import com.mogakview.config.auth.AppUser;
 import com.mogakview.config.auth.LoginUser;
 import com.mogakview.dto.qnabook.DeleteQnaBookResponse;
 import com.mogakview.dto.qnabook.LimitQnaBooksRequest;
+import com.mogakview.dto.qnabook.LimitQnaBooksResponse;
 import com.mogakview.dto.qnabook.QnaBookRequest;
 import com.mogakview.dto.qnabook.QnaBookResponse;
-import com.mogakview.dto.qnabook.LimitQnaBooksResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -61,5 +60,19 @@ public class QnaBookController {
         @LoginUser AppUser appUser) {
         DeleteQnaBookResponse qnaBookResponse = qnaBookService.deleteQnaBook(id, appUser);
         return ResponseEntity.ok(qnaBookResponse);
+    }
+
+    @PostMapping("/{qnaBookId}/hearts")
+    public ResponseEntity<HeartResponse> toggleHeart(@PathVariable Long qnaBookId,
+        @LoginUser AppUser appUser) {
+        HeartResponse heartResponse = qnaBookService.toggleHeart(qnaBookId, appUser);
+        return ResponseEntity.ok(heartResponse);
+    }
+
+    @GetMapping("/{qnaBookId}/hearts")
+    public ResponseEntity<HeartResponse> checkClickedHeart(@PathVariable Long qnaBookId,
+        @LoginUser AppUser appUser) {
+        HeartResponse heartResponse = qnaBookService.checkClickedHeart(qnaBookId, appUser);
+        return ResponseEntity.ok(heartResponse);
     }
 }

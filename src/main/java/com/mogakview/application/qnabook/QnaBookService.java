@@ -1,6 +1,8 @@
 package com.mogakview.application.qnabook;
 
 import com.mogakview.config.auth.AppUser;
+import com.mogakview.domain.heart.Heart;
+import com.mogakview.domain.heart.HeartRepository;
 import com.mogakview.domain.qnabook.QnaBook;
 import com.mogakview.domain.qnabook.QnaBookRepository;
 import com.mogakview.domain.qnabooktag.QnaBookTag;
@@ -9,10 +11,12 @@ import com.mogakview.domain.user.User;
 import com.mogakview.domain.user.UserRepository;
 import com.mogakview.dto.qnabook.DeleteQnaBookResponse;
 import com.mogakview.dto.qnabook.LimitQnaBooksRequest;
+import com.mogakview.dto.qnabook.LimitQnaBooksResponse;
 import com.mogakview.dto.qnabook.QnaBookRequest;
 import com.mogakview.dto.qnabook.QnaBookResponse;
-import com.mogakview.dto.qnabook.LimitQnaBooksResponse;
+import com.mogakview.presentation.qnabook.HeartResponse;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +30,7 @@ public class QnaBookService {
     private final UserRepository userRepository;
     private final QnaBookRepository qnaBookRepository;
     private final QnaBookTagRepository qnaBookTagRepository;
+    private final HeartRepository heartRepository;
 
     public QnaBookResponse createQnaBook(QnaBookRequest qnaBookRequest, AppUser appUser) {
         User user = userRepository.findById(appUser.getId())
@@ -98,4 +103,37 @@ public class QnaBookService {
         List<QnaBook> firstQnaBooks = qnaBookRepository.findFirstLimitQnaBooks(limit);
         return LimitQnaBooksResponse.of(firstQnaBooks);
     }
+
+    public HeartResponse toggleHeart(Long qnaBookId, AppUser appUser) {
+        // 따로 타입 뺄지 고민
+        boolean toggle = true;
+        return HeartResponse.of(checkHeartStatus(qnaBookId, appUser, toggle));
+    }
+
+    public HeartResponse checkClickedHeart(Long qnaBookId, AppUser appUser) {
+        boolean toggle = false;
+        return HeartResponse.of(checkHeartStatus(qnaBookId, appUser, toggle));
+    }
+
+    private boolean checkHeartStatus(Long qnaBookId, AppUser appUser, boolean toggle) {
+        QnaBook qnaBook = qnaBookRepository.findById(qnaBookId)
+            .orElseThrow(RuntimeException::new);
+        User user = userRepository.findById(appUser.getId())
+            .orElseThrow(RuntimeException::new);
+        Optional<Heart> findHeart = heartRepository.findByQnaBookAndUser(qnaBook, user);
+        if (toggle) {
+            return saveOrDeleteHeart(user, qnaBook, findHeart);
+        }
+        return findHeart.isPresent();
+    }
+
+    private boolean saveOrDeleteHeart(User user, QnaBook qnaBook, Optional<Heart> heart) {
+        if (heart.isPresent()) {
+            heartRepository.delete(heart.get());
+        } else {
+            heartRepository.save(Heart.of(user, qnaBook));
+        }
+        return heart.isEmpty();
+    }
+
 }

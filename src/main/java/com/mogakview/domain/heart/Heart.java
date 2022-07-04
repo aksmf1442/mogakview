@@ -29,4 +29,11 @@ public class Heart extends BaseEntity {
         this.user = user;
         this.qnaBook = qnaBook;
     }
+
+    public static Heart of(User user, QnaBook qnaBook) {
+        return Heart.builder()
+            .user(user)
+            .qnaBook(qnaBook)
+            .build();
+    }
 }
