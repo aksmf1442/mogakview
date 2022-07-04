@@ -30,8 +30,7 @@ public class QnaBookController {
 
     @GetMapping("")
     public ResponseEntity<LimitQnaBooksResponse> findLimitQnaBooks(
-        @ModelAttribute LimitQnaBooksRequest qnaBooksRequest, @RequestParam Long id,
-        @RequestParam int limit) {
+        @ModelAttribute LimitQnaBooksRequest qnaBooksRequest) {
         LimitQnaBooksResponse qnaBookResponses = qnaBookService.findLimitQnaBooks(qnaBooksRequest);
         return ResponseEntity.ok(qnaBookResponses);
     }

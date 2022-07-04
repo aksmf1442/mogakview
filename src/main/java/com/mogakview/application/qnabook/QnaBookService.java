@@ -82,10 +82,20 @@ public class QnaBookService {
     }
 
     public LimitQnaBooksResponse findLimitQnaBooks(LimitQnaBooksRequest qnaBooksRequest) {
+        if (qnaBooksRequest.isFirst()) {
+            return extractFirstQnaBooksByLimit(qnaBooksRequest.getLimit());
+        }
+
         QnaBook qnaBook = qnaBookRepository.findById(qnaBooksRequest.getId())
             .orElseThrow(RuntimeException::new);
         List<QnaBook> qnaBooks = qnaBookRepository.findLimitQnaBooks(qnaBook,
             qnaBooksRequest.getLimit());
+
         return LimitQnaBooksResponse.of(qnaBooks);
+    }
+
+    private LimitQnaBooksResponse extractFirstQnaBooksByLimit(int limit) {
+        List<QnaBook> firstQnaBooks = qnaBookRepository.findFirstLimitQnaBooks(limit);
+        return LimitQnaBooksResponse.of(firstQnaBooks);
     }
 }

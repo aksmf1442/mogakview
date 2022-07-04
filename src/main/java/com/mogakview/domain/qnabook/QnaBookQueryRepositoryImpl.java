@@ -22,5 +22,11 @@ public class QnaBookQueryRepositoryImpl implements QnaBookQueryRepository {
             .fetch();
     }
 
-
+    @Override
+    public List<QnaBook> findFirstLimitQnaBooks(int limit) {
+        return jpaQueryFactory.selectFrom(qnaBook)
+            .orderBy(qnaBook.createdAt.desc())
+            .limit(limit)
+            .fetch();
+    }
 }
