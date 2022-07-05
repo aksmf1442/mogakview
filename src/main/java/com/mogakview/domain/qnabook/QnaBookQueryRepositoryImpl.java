@@ -16,8 +16,9 @@ public class QnaBookQueryRepositoryImpl implements QnaBookQueryRepository {
     @Override
     public List<QnaBook> findLimitQnaBooks(QnaBook book, int limit) {
         return jpaQueryFactory.selectFrom(qnaBook)
-            .orderBy(qnaBook.createdAt.desc())
+            .where(qnaBook.opened.eq(true))
             .where(qnaBook.createdAt.before(book.getCreatedAt()))
+            .orderBy(qnaBook.createdAt.desc())
             .limit(limit)
             .fetch();
     }
@@ -25,6 +26,7 @@ public class QnaBookQueryRepositoryImpl implements QnaBookQueryRepository {
     @Override
     public List<QnaBook> findFirstLimitQnaBooks(int limit) {
         return jpaQueryFactory.selectFrom(qnaBook)
+            .where(qnaBook.opened.eq(true))
             .orderBy(qnaBook.createdAt.desc())
             .limit(limit)
             .fetch();

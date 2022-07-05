@@ -16,10 +16,12 @@ import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@Where(clause = "deleted=false")
 public class QnaBook extends BaseEntity {
 
     @Column(nullable = false)

@@ -9,10 +9,12 @@ import javax.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@Where(clause = "deleted=false")
 public class QnaBookTag extends BaseEntity {
 
     private String name;
