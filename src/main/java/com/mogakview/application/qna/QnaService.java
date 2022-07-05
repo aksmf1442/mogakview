@@ -34,7 +34,6 @@ public class QnaService {
         Qna qna = qnaRepository.findById(id)
             .orElseThrow(RuntimeException::new);
         qna.update(qnaRequest.getQuestion(), qnaRequest.getAnswer());
-
         return QnaResponse.of(qna);
     }
 

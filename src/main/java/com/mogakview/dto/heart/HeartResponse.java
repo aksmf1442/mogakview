@@ -1,6 +1,5 @@
-package com.mogakview.presentation.qnabook;
+package com.mogakview.dto.heart;
 
-import com.mogakview.domain.heart.Heart;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

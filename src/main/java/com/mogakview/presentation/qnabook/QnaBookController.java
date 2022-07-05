@@ -3,6 +3,8 @@ package com.mogakview.presentation.qnabook;
 import com.mogakview.application.qnabook.QnaBookService;
 import com.mogakview.config.auth.AppUser;
 import com.mogakview.config.auth.LoginUser;
+import com.mogakview.dto.heart.HeartResponse;
+import com.mogakview.dto.qna.QnasResponse;
 import com.mogakview.dto.qnabook.DeleteQnaBookResponse;
 import com.mogakview.dto.qnabook.LimitQnaBooksRequest;
 import com.mogakview.dto.qnabook.LimitQnaBooksResponse;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/qnaBooks")
+@RequestMapping("/qna-books")
 public class QnaBookController {
 
     private final QnaBookService qnaBookService;
@@ -60,6 +62,12 @@ public class QnaBookController {
         @LoginUser AppUser appUser) {
         DeleteQnaBookResponse qnaBookResponse = qnaBookService.deleteQnaBook(id, appUser);
         return ResponseEntity.ok(qnaBookResponse);
+    }
+
+    @GetMapping("/{qnaBookId}/qnas")
+    public ResponseEntity<QnasResponse> findQnasInQnaBook(@PathVariable Long qnaBookId) {
+        QnasResponse qnasResponse = qnaBookService.findQnasBookInQnaBook(qnaBookId);
+        return ResponseEntity.ok(qnasResponse);
     }
 
     @PostMapping("/{qnaBookId}/hearts")

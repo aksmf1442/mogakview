@@ -3,18 +3,22 @@ package com.mogakview.application.qnabook;
 import com.mogakview.config.auth.AppUser;
 import com.mogakview.domain.heart.Heart;
 import com.mogakview.domain.heart.HeartRepository;
+import com.mogakview.domain.qna.Qna;
+import com.mogakview.domain.qna.QnaRepository;
 import com.mogakview.domain.qnabook.QnaBook;
 import com.mogakview.domain.qnabook.QnaBookRepository;
 import com.mogakview.domain.qnabooktag.QnaBookTag;
 import com.mogakview.domain.qnabooktag.QnaBookTagRepository;
 import com.mogakview.domain.user.User;
 import com.mogakview.domain.user.UserRepository;
+import com.mogakview.dto.heart.HeartRequestType;
+import com.mogakview.dto.qna.QnasResponse;
 import com.mogakview.dto.qnabook.DeleteQnaBookResponse;
 import com.mogakview.dto.qnabook.LimitQnaBooksRequest;
 import com.mogakview.dto.qnabook.LimitQnaBooksResponse;
 import com.mogakview.dto.qnabook.QnaBookRequest;
 import com.mogakview.dto.qnabook.QnaBookResponse;
-import com.mogakview.presentation.qnabook.HeartResponse;
+import com.mogakview.dto.heart.HeartResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +34,7 @@ public class QnaBookService {
     private final UserRepository userRepository;
     private final QnaBookRepository qnaBookRepository;
     private final QnaBookTagRepository qnaBookTagRepository;
+    private final QnaRepository qnaRepository;
     private final HeartRepository heartRepository;
 
     public QnaBookResponse createQnaBook(QnaBookRequest qnaBookRequest, AppUser appUser) {
@@ -104,24 +109,28 @@ public class QnaBookService {
         return LimitQnaBooksResponse.of(firstQnaBooks);
     }
 
+    public QnasResponse findQnasBookInQnaBook(Long qnaBookId) {
+        QnaBook qnaBook = qnaBookRepository.findById(qnaBookId)
+            .orElseThrow(RuntimeException::new);
+        List<Qna> qnas = qnaRepository.findQnasByQnaBook(qnaBook);
+        return QnasResponse.of(qnas);
+    }
+
     public HeartResponse toggleHeart(Long qnaBookId, AppUser appUser) {
-        // 따로 타입 뺄지 고민
-        boolean toggle = true;
-        return HeartResponse.of(checkHeartStatus(qnaBookId, appUser, toggle));
+        return HeartResponse.of(checkHeartStatus(qnaBookId, appUser, HeartRequestType.TOGGLE));
     }
 
     public HeartResponse checkClickedHeart(Long qnaBookId, AppUser appUser) {
-        boolean toggle = false;
-        return HeartResponse.of(checkHeartStatus(qnaBookId, appUser, toggle));
+        return HeartResponse.of(checkHeartStatus(qnaBookId, appUser, HeartRequestType.BASIC));
     }
 
-    private boolean checkHeartStatus(Long qnaBookId, AppUser appUser, boolean toggle) {
+    private boolean checkHeartStatus(Long qnaBookId, AppUser appUser, HeartRequestType type) {
         QnaBook qnaBook = qnaBookRepository.findById(qnaBookId)
             .orElseThrow(RuntimeException::new);
         User user = userRepository.findById(appUser.getId())
             .orElseThrow(RuntimeException::new);
         Optional<Heart> findHeart = heartRepository.findByQnaBookAndUser(qnaBook, user);
-        if (toggle) {
+        if (type == HeartRequestType.TOGGLE) {
             return saveOrDeleteHeart(user, qnaBook, findHeart);
         }
         return findHeart.isPresent();
@@ -135,5 +144,4 @@ public class QnaBookService {
         }
         return heart.isEmpty();
     }
-
 }
