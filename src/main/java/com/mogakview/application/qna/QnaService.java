@@ -9,6 +9,7 @@ import com.mogakview.dto.qna.DeleteQnaResponse;
 import com.mogakview.dto.qna.QnaRequest;
 import com.mogakview.dto.qna.QnaResponse;
 import com.mogakview.dto.qna.UpdateQnaRequest;
+import com.mogakview.exception.qna.QnaNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class QnaService {
 
     public QnaResponse createQna(QnaRequest qnaRequest, AppUser appUser) {
         QnaBook qnaBook = qnaBookRepository.findById(qnaRequest.getQnaBookId())
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(QnaNotFoundException::new);
         appUser.checkSameUser(qnaBook.getUser());
         Qna qna = qnaRequest.toQna(qnaBook);
         Qna savedQna = qnaRepository.save(qna);
@@ -32,14 +33,14 @@ public class QnaService {
 
     public QnaResponse updateQna(Long id, UpdateQnaRequest qnaRequest) {
         Qna qna = qnaRepository.findById(id)
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(QnaNotFoundException::new);
         qna.update(qnaRequest.getQuestion(), qnaRequest.getAnswer());
         return QnaResponse.of(qna);
     }
 
     public DeleteQnaResponse deleteQnaById(Long id, AppUser appUser) {
         Qna qna = qnaRepository.findById(id)
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(QnaNotFoundException::new);
         appUser.checkSameUser(qna.getQnaBook().getUser());
         qna.delete();
         return DeleteQnaResponse.of(id);

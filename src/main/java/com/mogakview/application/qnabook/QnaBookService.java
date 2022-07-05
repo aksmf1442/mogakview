@@ -19,6 +19,8 @@ import com.mogakview.dto.qnabook.LimitQnaBooksResponse;
 import com.mogakview.dto.qnabook.QnaBookRequest;
 import com.mogakview.dto.qnabook.QnaBookResponse;
 import com.mogakview.dto.heart.HeartResponse;
+import com.mogakview.exception.qnabook.QnaBookNotFoundException;
+import com.mogakview.exception.user.UserNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +41,7 @@ public class QnaBookService {
 
     public QnaBookResponse createQnaBook(QnaBookRequest qnaBookRequest, AppUser appUser) {
         User user = userRepository.findById(appUser.getId())
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(UserNotFoundException::new);
         QnaBook savedQnaBook = qnaBookRepository.save(qnaBookRequest.toQnaBook(user));
         createQnaBookTags(qnaBookRequest, savedQnaBook);
         return createQnaBookResponse(savedQnaBook);
@@ -57,7 +59,7 @@ public class QnaBookService {
 
     @Transactional(readOnly = true)
     public QnaBookResponse findQnaBookById(Long id) {
-        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(RuntimeException::new);
+        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(QnaBookNotFoundException::new);
         return createQnaBookResponse(qnaBook);
     }
 
@@ -67,7 +69,7 @@ public class QnaBookService {
     }
 
     public QnaBookResponse updateQnaBook(Long id, QnaBookRequest qnaBookRequest, AppUser appUser) {
-        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(RuntimeException::new);
+        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(QnaBookNotFoundException::new);
         appUser.checkSameUser(qnaBook.getUser());
         List<QnaBookTag> qnaBookTags = updateQnaBookTagsOfQnaBook(
             qnaBookRequest, qnaBook);
@@ -83,9 +85,9 @@ public class QnaBookService {
     }
 
     public DeleteQnaBookResponse deleteQnaBook(Long id, AppUser appUser) {
-        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(RuntimeException::new);
+        QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(QnaBookNotFoundException::new);
         User user = userRepository.findById(qnaBook.getUser().getId())
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(UserNotFoundException::new);
         appUser.checkSameUser(user);
         qnaBook.delete();
         return DeleteQnaBookResponse.of(id);
@@ -97,7 +99,7 @@ public class QnaBookService {
         }
 
         QnaBook qnaBook = qnaBookRepository.findById(qnaBooksRequest.getId())
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(QnaBookNotFoundException::new);
         List<QnaBook> qnaBooks = qnaBookRepository.findLimitQnaBooks(qnaBook,
             qnaBooksRequest.getLimit());
 
@@ -111,7 +113,7 @@ public class QnaBookService {
 
     public QnasResponse findQnasBookInQnaBook(Long qnaBookId) {
         QnaBook qnaBook = qnaBookRepository.findById(qnaBookId)
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(QnaBookNotFoundException::new);
         List<Qna> qnas = qnaRepository.findQnasByQnaBook(qnaBook);
         return QnasResponse.of(qnas);
     }
@@ -126,9 +128,9 @@ public class QnaBookService {
 
     private boolean checkHeartStatus(Long qnaBookId, AppUser appUser, HeartRequestType type) {
         QnaBook qnaBook = qnaBookRepository.findById(qnaBookId)
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(QnaBookNotFoundException::new);
         User user = userRepository.findById(appUser.getId())
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(UserNotFoundException::new);
         Optional<Heart> findHeart = heartRepository.findByQnaBookAndUser(qnaBook, user);
         if (type == HeartRequestType.TOGGLE) {
             return saveOrDeleteHeart(user, qnaBook, findHeart);
