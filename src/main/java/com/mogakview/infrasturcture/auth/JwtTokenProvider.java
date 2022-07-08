@@ -20,7 +20,7 @@ public class JwtTokenProvider {
         return createToken(id, jwtAccessToken);
     }
 
-    public String creatRefreshToken(Long id) {
+    public String createRefreshToken(Long id) {
         return createToken(id, jwtRefreshToken);
     }
 

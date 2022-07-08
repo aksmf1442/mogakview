@@ -43,7 +43,7 @@ public class AuthService {
     }
 
     public RefreshTokenResponse createRefreshToken(Long id) {
-        return RefreshTokenResponse.of(jwtTokenProvider.creatRefreshToken(id));
+        return RefreshTokenResponse.of(jwtTokenProvider.createRefreshToken(id));
     }
 
     public AccessTokenResponse createNewAccessToken(Long id) {
