@@ -35,7 +35,7 @@ public class AuthService {
             oauthUser.getSocialId(), oauthUser.getSocialType());
 
         if (findUser.isPresent()) {
-            return AccessTokenResponse.of(jwtTokenProvider.createAccessToken(oauthUser.getId()));
+            return AccessTokenResponse.of(jwtTokenProvider.createAccessToken(findUser.get().getId()));
         }
 
         User savedUser = userRepository.save(oauthUser);

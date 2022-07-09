@@ -22,12 +22,12 @@ public class QnaBookResponse {
 
     private List<QnaBookTagResponse> tags;
 
-    public static QnaBookResponse of(QnaBook qnaBook, List<QnaBookTag> qnaBookTags) {
+    public static QnaBookResponse of(QnaBook qnaBook) {
         return QnaBookResponse.builder()
             .id(qnaBook.getId())
             .author(qnaBook.getUser().getUserName())
             .title(qnaBook.getTitle())
-            .tags(qnaBookTags.stream()
+            .tags(qnaBook.getQnaBookTags().stream()
                     .map(QnaBookTagResponse::of).collect(Collectors.toList()))
             .build();
     }

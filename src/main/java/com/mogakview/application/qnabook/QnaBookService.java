@@ -43,45 +43,42 @@ public class QnaBookService {
         User user = userRepository.findById(appUser.getId())
             .orElseThrow(UserNotFoundException::new);
         QnaBook savedQnaBook = qnaBookRepository.save(qnaBookRequest.toQnaBook(user));
-        createQnaBookTags(qnaBookRequest, savedQnaBook);
-        return createQnaBookResponse(savedQnaBook);
+        updateQnaBookTagsToQnaBook(qnaBookRequest, savedQnaBook);
+        return QnaBookResponse.of(savedQnaBook);
     }
 
-    private List<QnaBookTag> createQnaBookTags(QnaBookRequest qnaBookRequest,
-        QnaBook savedQnaBook) {
-        List<QnaBookTag> qnaBookTags = qnaBookRequest.getTags().stream()
-            .map(tag -> QnaBookTag.of(savedQnaBook, tag.getName()))
-            .collect(Collectors.toList());
+    private void updateQnaBookTagsToQnaBook(QnaBookRequest qnaBookRequest, QnaBook savedQnaBook) {
+        List<QnaBookTag> qnaBookTags = createQnaBookTags(qnaBookRequest, savedQnaBook);
         savedQnaBook.updateQnaBookTags(qnaBookTags);
         qnaBookTagRepository.saveAll(qnaBookTags);
-        return qnaBookTags;
     }
 
     @Transactional(readOnly = true)
     public QnaBookResponse findQnaBookById(Long id) {
         QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(QnaBookNotFoundException::new);
-        return createQnaBookResponse(qnaBook);
-    }
-
-    private QnaBookResponse createQnaBookResponse(QnaBook qnaBook) {
-        List<QnaBookTag> qnaBookTags = qnaBook.getQnaBookTags();
-        return QnaBookResponse.of(qnaBook, qnaBookTags);
+        return QnaBookResponse.of(qnaBook);
     }
 
     public QnaBookResponse updateQnaBook(Long id, QnaBookRequest qnaBookRequest, AppUser appUser) {
         QnaBook qnaBook = qnaBookRepository.findById(id).orElseThrow(QnaBookNotFoundException::new);
         appUser.checkSameUser(qnaBook.getUser());
-        List<QnaBookTag> qnaBookTags = updateQnaBookTagsOfQnaBook(
-            qnaBookRequest, qnaBook);
-        return QnaBookResponse.of(qnaBook, qnaBookTags);
+        updateQnaBookWithQnaBookTags(qnaBookRequest, qnaBook);
+        return QnaBookResponse.of(qnaBook);
     }
 
-    private List<QnaBookTag> updateQnaBookTagsOfQnaBook(QnaBookRequest qnaBookRequest,
+    private void updateQnaBookWithQnaBookTags(QnaBookRequest qnaBookRequest,
         QnaBook qnaBook) {
         List<QnaBookTag> qnaBookTags = createQnaBookTags(qnaBookRequest, qnaBook);
         qnaBook.updateWithQnaBookTags(qnaBookRequest.getTitle(), qnaBookRequest.isOpened(),
             qnaBookTags);
-        return qnaBookTags;
+        qnaBookTagRepository.flush();
+    }
+
+    private List<QnaBookTag> createQnaBookTags(QnaBookRequest qnaBookRequest,
+        QnaBook savedQnaBook) {
+        return qnaBookRequest.getTags().stream()
+            .map(tag -> QnaBookTag.of(savedQnaBook, tag.getName()))
+            .collect(Collectors.toList());
     }
 
     public DeleteQnaBookResponse deleteQnaBook(Long id, AppUser appUser) {

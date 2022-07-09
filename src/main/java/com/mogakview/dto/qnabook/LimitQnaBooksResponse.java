@@ -17,7 +17,7 @@ public class LimitQnaBooksResponse {
     public static LimitQnaBooksResponse of(List<QnaBook> qnaBooks) {
         return LimitQnaBooksResponse.builder()
             .qnaBooksResponses(qnaBooks.stream()
-                .map(qnaBook -> QnaBookResponse.of(qnaBook, qnaBook.getQnaBookTags()))
+                .map(QnaBookResponse::of)
                 .collect(Collectors.toList()))
             .build();
     }
