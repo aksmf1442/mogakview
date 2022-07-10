@@ -41,10 +41,6 @@ public class QnaBookTag extends BaseEntity {
             .build();
     }
 
-    public void updateQnaBook(QnaBook qnaBook) {
-        this.qnaBook = qnaBook;
-    }
-
     public void delete() {
         this.deleted = true;
     }

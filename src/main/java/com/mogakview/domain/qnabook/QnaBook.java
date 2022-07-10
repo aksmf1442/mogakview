@@ -61,7 +61,6 @@ public class QnaBook extends BaseEntity {
     public void updateQnaBookTags(List<QnaBookTag> qnaBookTags) {
         this.qnaBookTags.clear();
         this.qnaBookTags.addAll(qnaBookTags);
-        qnaBookTags.forEach(qnaBookTag -> qnaBookTag.updateQnaBook(this));
     }
 
     public void delete() {
