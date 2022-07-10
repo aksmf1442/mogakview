@@ -66,7 +66,7 @@ public class QnaBookController {
 
     @GetMapping("/{qnaBookId}/qnas")
     public ResponseEntity<QnasResponse> findQnasInQnaBook(@PathVariable Long qnaBookId) {
-        QnasResponse qnasResponse = qnaBookService.findQnasBookInQnaBook(qnaBookId);
+        QnasResponse qnasResponse = qnaBookService.findQnasInQnaBook(qnaBookId);
         return ResponseEntity.ok(qnasResponse);
     }
 

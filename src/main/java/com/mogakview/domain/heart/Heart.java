@@ -25,7 +25,8 @@ public class Heart extends BaseEntity {
     private QnaBook qnaBook;
 
     @Builder
-    public Heart(User user, QnaBook qnaBook) {
+    public Heart(Long id, User user, QnaBook qnaBook) {
+        this.id = id;
         this.user = user;
         this.qnaBook = qnaBook;
     }

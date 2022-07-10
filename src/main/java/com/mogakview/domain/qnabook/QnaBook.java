@@ -44,7 +44,8 @@ public class QnaBook extends BaseEntity {
     private List<Qna> qnas = new ArrayList<>();
 
     @Builder
-    public QnaBook(String title, User user, boolean opened, boolean deleted) {
+    public QnaBook(Long id, String title, User user, boolean opened, boolean deleted) {
+        this.id = id;
         this.title = title;
         this.user = user;
         this.opened = opened;

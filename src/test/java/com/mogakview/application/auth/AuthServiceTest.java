@@ -227,7 +227,7 @@ class AuthServiceTest {
     @DisplayName("[실패] 로그인 - 허용해둔 소셜 타입이 아니면 SocialTypeNotFoundException 발생")
     @Test
     void createTokenWithSocialTypeNotFoundException() throws Exception {
-        // given
+        //given
         LoginRequest loginRequest = LoginRequest.builder()
             .code("code")
             .build();
@@ -242,7 +242,7 @@ class AuthServiceTest {
     @DisplayName("[성공] refresh 토큰 발급")
     @Test
     void createRefreshToken() throws Exception {
-        // given
+        //given
         Long id = 1L;
         String refreshToken = "refreshToken";
         given(jwtTokenProvider.createRefreshToken(id)).willReturn(refreshToken);
@@ -261,7 +261,7 @@ class AuthServiceTest {
     @DisplayName("[성공] accessToken 토큰 발급")
     @Test
     void createAccessToken() throws Exception {
-        // given
+        //given
         Long id = 1L;
         String accessToken = "accessToken";
         given(jwtTokenProvider.createAccessToken(id)).willReturn(accessToken);
@@ -280,7 +280,7 @@ class AuthServiceTest {
     @DisplayName("[성공] create AppUser")
     @Test
     void createAppUser() throws Exception {
-        // given
+        //given
         Long id = 1L;
 
         //when

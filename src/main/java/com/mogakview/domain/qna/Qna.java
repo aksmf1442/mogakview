@@ -32,7 +32,8 @@ public class Qna extends BaseEntity {
     private boolean deleted;
 
     @Builder
-    public Qna(String question, String answer, QnaBook qnaBook, boolean deleted) {
+    public Qna(Long id, String question, String answer, QnaBook qnaBook, boolean deleted) {
+        this.id = id;
         this.question = question;
         this.answer = answer;
         this.qnaBook = qnaBook;

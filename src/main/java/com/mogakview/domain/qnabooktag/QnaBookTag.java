@@ -26,7 +26,8 @@ public class QnaBookTag extends BaseEntity {
     private boolean deleted;
 
     @Builder
-    public QnaBookTag(QnaBook qnaBook, String name, boolean deleted) {
+    public QnaBookTag(Long id, QnaBook qnaBook, String name, boolean deleted) {
+        this.id = id;
         this.name = name;
         this.qnaBook = qnaBook;
         this.deleted = deleted;

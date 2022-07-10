@@ -90,6 +90,7 @@ public class QnaBookService {
         return DeleteQnaBookResponse.of(id);
     }
 
+    @Transactional(readOnly = true)
     public LimitQnaBooksResponse findLimitQnaBooks(LimitQnaBooksRequest qnaBooksRequest) {
         if (qnaBooksRequest.isFirst()) {
             return extractFirstQnaBooksByLimit(qnaBooksRequest.getLimit());
@@ -108,7 +109,7 @@ public class QnaBookService {
         return LimitQnaBooksResponse.of(firstQnaBooks);
     }
 
-    public QnasResponse findQnasBookInQnaBook(Long qnaBookId) {
+    public QnasResponse findQnasInQnaBook(Long qnaBookId) {
         QnaBook qnaBook = qnaBookRepository.findById(qnaBookId)
             .orElseThrow(QnaBookNotFoundException::new);
         List<Qna> qnas = qnaRepository.findQnasByQnaBook(qnaBook);
