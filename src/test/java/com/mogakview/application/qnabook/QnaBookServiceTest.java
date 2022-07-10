@@ -7,13 +7,11 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 import com.mogakview.config.auth.AppUser;
-import com.mogakview.domain.heart.HeartRepository;
 import com.mogakview.domain.qna.Qna;
 import com.mogakview.domain.qna.QnaRepository;
 import com.mogakview.domain.qnabook.QnaBook;
 import com.mogakview.domain.qnabook.QnaBookRepository;
 import com.mogakview.domain.qnabooktag.QnaBookTag;
-import com.mogakview.domain.qnabooktag.QnaBookTagRepository;
 import com.mogakview.domain.user.Role;
 import com.mogakview.domain.user.SocialType;
 import com.mogakview.domain.user.User;
@@ -46,13 +44,7 @@ class QnaBookServiceTest {
     private QnaBookRepository qnaBookRepository;
 
     @Mock
-    private QnaBookTagRepository qnaBookTagRepository;
-
-    @Mock
     private QnaRepository qnaRepository;
-
-    @Mock
-    private HeartRepository heartRepository;
 
     @InjectMocks
     private QnaBookService qnaBookService;
