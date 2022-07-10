@@ -12,6 +12,7 @@ import com.mogakview.domain.qna.QnaRepository;
 import com.mogakview.domain.qnabook.QnaBook;
 import com.mogakview.domain.qnabook.QnaBookRepository;
 import com.mogakview.domain.qnabooktag.QnaBookTag;
+import com.mogakview.domain.qnabooktag.QnaBookTagRepository;
 import com.mogakview.domain.user.Role;
 import com.mogakview.domain.user.SocialType;
 import com.mogakview.domain.user.User;
@@ -26,6 +27,7 @@ import com.mogakview.dto.qnabooktag.QnaBookTagRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +47,9 @@ class QnaBookServiceTest {
 
     @Mock
     private QnaRepository qnaRepository;
+
+    @Mock
+    QnaBookTagRepository qnaBookTagRepository;
 
     @InjectMocks
     private QnaBookService qnaBookService;
@@ -82,8 +87,13 @@ class QnaBookServiceTest {
             .tags(tagRequests)
             .build();
 
+        List<QnaBookTag> qnaBookTags = tagRequests.stream()
+            .map(tagRequest -> QnaBookTag.of(expectedQnaBook, tagRequest.getName()))
+            .collect(Collectors.toList());
+
         given(userRepository.findById(appUser.getId())).willReturn(Optional.of(user));
         given(qnaBookRepository.save(any())).willReturn(expectedQnaBook);
+        given(qnaBookTagRepository.saveAll(any())).willReturn(qnaBookTags);
 
         //when
         QnaBookResponse qnaBookResponse = qnaBookService.createQnaBook(qnaBookRequest, appUser);
