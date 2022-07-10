@@ -137,6 +137,7 @@ class QnaServiceTest {
             .findById(qnaId);
     }
 
+    @DisplayName("[성공] qna 삭제")
     @Test
     void deleteQnaById() throws Exception {
         // given
