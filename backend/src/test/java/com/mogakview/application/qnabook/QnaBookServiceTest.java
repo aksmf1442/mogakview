@@ -49,11 +49,10 @@ class QnaBookServiceTest {
     private QnaRepository qnaRepository;
 
     @Mock
-    QnaBookTagRepository qnaBookTagRepository;
+    private QnaBookTagRepository qnaBookTagRepository;
 
     @InjectMocks
     private QnaBookService qnaBookService;
-
 
     @DisplayName("[성공] QnaBook과 QnaBookTag 생성")
     @Test
