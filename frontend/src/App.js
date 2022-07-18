@@ -11,6 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/google/callback" element={<OauthCallbackPage />} />
+          <Route path="/kakao/callback" element={<OauthCallbackPage />} />
         </Routes>
       </Router>
     </>

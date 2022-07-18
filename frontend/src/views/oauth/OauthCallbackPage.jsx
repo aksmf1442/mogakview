@@ -1,23 +1,26 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import socialLogin from "../../api/auth/socialLogin";
+import { SOCIAL_TYPE, TOKEN } from "../../utils/CommonValue";
 
 function OauthCallbackPage() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const code = new URLSearchParams(search).get("code");
-  // socialType 상수로 뺴줘야 함
-  const socialType =
-    window.localStorage.getItem("socialType") || JSON.stringify(null);
 
-  if (!code) {
+  const socialType =
+    window.localStorage.getItem(SOCIAL_TYPE.TITLE) || JSON.stringify(null);
+
+  if (!code & !socialType) {
     return null;
   }
 
   const login = async () => {
     try {
-      await socialLogin({ socialType, code });
-      return null;
+      const accessToken = await socialLogin({ socialType, code });
+      window.localStorage.setItem(TOKEN.ACCESS_TOKEN, accessToken);
+
+      navigate(-1);
     } catch (error) {
       console.error(error);
     }

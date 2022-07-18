@@ -23,6 +23,12 @@ function Header() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLogin, setIsLogin] = React.useState(false);
   const [loginOpen, setLoginOpen] = React.useState(false);
+  // todo: 프로필에 나타낼 이미지 추가해야 함(백엔드에 아직 안만듬)
+  const [userInfo, setUserInfo] = React.useState({
+    userId: null,
+    userName: "",
+    userThumbnailURL: null,
+  });
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -38,6 +44,8 @@ function Header() {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+    // todo: api 추가해야 함(백엔드에서 이와 관련된 것 만든 후에)
+    // getProfileInfo();
   };
 
   const handleMobileMenuOpen = (event) => {
