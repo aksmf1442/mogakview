@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { LandingPage } from "./views";
+import { LandingPage, OauthCallbackPage } from "./views";
 import { Header } from "./components";
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/google/callback" element={<OauthCallbackPage />} />
         </Routes>
       </Router>
     </>

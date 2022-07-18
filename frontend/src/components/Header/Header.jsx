@@ -14,6 +14,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import { LoginModal } from "../index";
 
 const pages = ["Q&A", "퀴즈"];
 
@@ -21,6 +22,7 @@ function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLogin, setIsLogin] = React.useState(false);
+  const [loginOpen, setLoginOpen] = React.useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -40,6 +42,14 @@ function Header() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleLoginOpen = () => {
+    setLoginOpen(true);
+  };
+
+  const handleLoginClose = () => {
+    setLoginOpen(false);
   };
 
   //   const handleCloseNavMenu = () => {
@@ -67,7 +77,6 @@ function Header() {
       <MenuItem onClick={handleMenuClose}>LOGOUT</MenuItem>
     </Menu>
   );
-
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
@@ -85,18 +94,34 @@ function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <Button
-          // onClick={handleCloseNavMenu}
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          프로필
-        </Button>
-      </MenuItem>
+      {isLogin && (
+        <MenuItem>
+          <Button
+            // onClick={handleCloseNavMenu}
+            size="large"
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            프로필
+          </Button>
+        </MenuItem>
+      )}
+      {!isLogin && (
+        <MenuItem>
+          <Button
+            onClick={handleLoginOpen}
+            size="large"
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            LOGIN
+          </Button>
+        </MenuItem>
+      )}
       {pages.map((page) => (
         <MenuItem key={page}>
           <Button
@@ -170,10 +195,10 @@ function Header() {
             )}
             {!isLogin && (
               <Button
-                // onClick={handleCloseNavMenu}
+                onClick={handleLoginOpen}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                Login
+                LOGIN
               </Button>
             )}
           </Box>
@@ -191,6 +216,7 @@ function Header() {
           </Box>
         </Toolbar>
       </AppBar>
+      <LoginModal open={loginOpen} onClose={handleLoginClose} />
       {renderMobileMenu}
       {renderMenu}
     </Box>

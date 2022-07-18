@@ -1,3 +1,4 @@
-import LandingPage from "./LandingPage/LandingPage";
+import LandingPage from "./landingpage/LandingPage";
+import OauthCallbackPage from "./oauth/OauthCallbackPage";
 
-export { LandingPage };
+export { LandingPage, OauthCallbackPage };
