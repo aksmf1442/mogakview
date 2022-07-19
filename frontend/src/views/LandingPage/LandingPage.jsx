@@ -3,6 +3,8 @@ import { CssBaseline } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { MainFeaturePost, Search } from "../../components/landing";
 import together from "../../assets/together.png";
+import { Container } from "@mui/system";
+import QnaBooks from "../../components/qnabook/QnaBooks";
 
 const mainFeaturedPost = {
   title: "면접을 혼자 준비하는 것은 어렵습니다!",
@@ -22,6 +24,9 @@ function LandingPage() {
       <CssBaseline />
       <MainFeaturePost post={mainFeaturedPost} />
       <Search />
+      <Container>
+        <QnaBooks />
+      </Container>
     </ThemeProvider>
   );
 }

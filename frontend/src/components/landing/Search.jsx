@@ -1,16 +1,8 @@
 import React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputBase, Grid, Container, Button } from "@mui/material";
-
-const Item = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  border: "1px solid",
-  borderColor: theme.palette.mode === "dark" ? "#444d58" : "#ced7e0",
-  padding: theme.spacing(1),
-  borderRadius: "4px",
-  textAlign: "center",
-}));
+import { InputBase, Grid, Container } from "@mui/material";
+import { SearchOption } from "../landing/index";
 
 const SearchStyled = styled("div")(({ theme }) => ({
   position: "relative",
@@ -41,7 +33,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(3.3, 1, 1, 0),
 
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
@@ -57,15 +49,7 @@ function Search() {
     <Container>
       <Grid container spacing={2}>
         <Grid item={true} xs={2}></Grid>
-        <Button>
-          <Item>전체글</Item>
-        </Button>
-        <Button>
-          <Item>최신순</Item>
-        </Button>
-        <Button>
-          <Item>인기순</Item>
-        </Button>
+        <SearchOption />
         <SearchStyled>
           <SearchIconWrapper>
             <SearchIcon />
