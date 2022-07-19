@@ -6,12 +6,10 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  InputBase,
   MenuItem,
   Menu,
   Button,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { LoginModal } from "../index";
@@ -111,6 +109,7 @@ function Header() {
             aria-controls="primary-search-account-menu"
             aria-haspopup="true"
             color="inherit"
+            sx={{ color: "#6D73AD" }}
           >
             프로필
           </Button>
@@ -125,6 +124,7 @@ function Header() {
             aria-controls="primary-search-account-menu"
             aria-haspopup="true"
             color="inherit"
+            sx={{ color: "#6D73AD" }}
           >
             LOGIN
           </Button>
@@ -139,6 +139,7 @@ function Header() {
             aria-controls="primary-search-account-menu"
             aria-haspopup="true"
             color="inherit"
+            sx={{ color: "#6D73AD" }}
           >
             {page}
           </Button>
@@ -149,7 +150,10 @@ function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        sx={{ backgroundColor: "#FFFFFF", color: "#1B1C3A" }}
+      >
         <Toolbar>
           <Button
             // onClick={handleCloseNavMenu}
@@ -167,23 +171,22 @@ function Header() {
             >
               모각뷰
             </Typography>
+            <Typography
+              variant="p"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "block", sm: "none" } }}
+            >
+              모각뷰
+            </Typography>
           </Button>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 // onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: "#6D73AD", display: "block" }}
               >
                 {page}
               </Button>
@@ -196,7 +199,7 @@ function Header() {
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
-                color="inherit"
+                color="#6D73AD"
               >
                 <AccountCircle />
               </IconButton>
@@ -204,7 +207,7 @@ function Header() {
             {!isLogin && (
               <Button
                 onClick={handleLoginOpen}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: "#6D73AD", display: "block" }}
               >
                 LOGIN
               </Button>
@@ -244,30 +247,6 @@ const Search = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
   },
 }));
 
