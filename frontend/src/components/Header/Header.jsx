@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -14,9 +14,13 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { LoginModal } from "../index";
 
-const pages = ["Q&A", "퀴즈"];
+const profile = "프로필";
+const login = "로그인";
+const pages = ["면접준비", "퀴즈준비", "새글쓰기"];
+const pageNav = ["/", "/quiz", "/qnabookAdd"];
 
 function Header() {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLogin, setIsLogin] = React.useState(false);
@@ -58,9 +62,17 @@ function Header() {
     setLoginOpen(false);
   };
 
-  //   const handleCloseNavMenu = () => {
-  //     setAnchorElNav(null);
-  //   };
+  const handleOnClickNavMenu = (event) => {
+    const value = event.target.innerText;
+    pages.forEach((page, idx) => {
+      if (page === value) {
+        navigate(pageNav[idx]);
+      }
+    });
+    if (value === "모각뷰") {
+      navigate("/");
+    }
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -111,7 +123,7 @@ function Header() {
             color="inherit"
             sx={{ color: "#6D73AD" }}
           >
-            프로필
+            {profile}
           </Button>
         </MenuItem>
       )}
@@ -126,7 +138,7 @@ function Header() {
             color="inherit"
             sx={{ color: "#6D73AD" }}
           >
-            LOGIN
+            {login}
           </Button>
         </MenuItem>
       )}
@@ -156,7 +168,7 @@ function Header() {
       >
         <Toolbar>
           <Button
-            // onClick={handleCloseNavMenu}
+            onClick={handleOnClickNavMenu}
             size="large"
             aria-label="account of current user"
             aria-controls="primary-search-account-menu"
@@ -185,7 +197,7 @@ function Header() {
             {pages.map((page) => (
               <Button
                 key={page}
-                // onClick={handleCloseNavMenu}
+                onClick={handleOnClickNavMenu}
                 sx={{ my: 2, color: "#6D73AD", display: "block" }}
               >
                 {page}
@@ -209,7 +221,7 @@ function Header() {
                 onClick={handleLoginOpen}
                 sx={{ my: 2, color: "#6D73AD", display: "block" }}
               >
-                LOGIN
+                {login}
               </Button>
             )}
           </Box>
@@ -233,21 +245,5 @@ function Header() {
     </Box>
   );
 }
-
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
 
 export default Header;
