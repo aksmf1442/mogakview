@@ -3,10 +3,11 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { Container } from "@mui/system";
+import { Box, Container } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import Switch from "@mui/material/Switch";
 import Button from "@mui/material/Button";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 export default function QnaBookAddPage() {
   const [title, setTitle] = React.useState("");
@@ -37,8 +38,20 @@ export default function QnaBookAddPage() {
     }
   };
 
+  const handleTagButton = (event) => {
+    const deleteTag = event.currentTarget.innerText.replace("#", "");
+    const newTags = [];
+    tags.forEach((tag) => {
+      if (tag !== deleteTag) {
+        newTags.push(tag);
+      }
+    });
+    setTags(newTags);
+  };
+
   const handleQnaBookAddButtonOnClick = () => {
     // qnaBook add api 추가해야함
+    //title, isPublic, tags
   };
 
   const SwitchLabels = () => {
@@ -55,7 +68,7 @@ export default function QnaBookAddPage() {
   return (
     <Container>
       <Typography variant="h6" gutterBottom sx={{}}>
-        면접 질문 모음집 추가
+        Q&A Book 생성
       </Typography>
       <Grid container spacing={3}>
         <Grid
@@ -88,25 +101,27 @@ export default function QnaBookAddPage() {
         </Grid>
         <Grid item xs={12} md={12}>
           {tags.map((tag) => (
-            <Typography
-              variant="p"
-              component="p"
-              sx={{ opacity: 0.6 }}
-              key={tag}
-            >
-              <Typography
-                variant="span"
-                component="span"
-                sx={{ opacity: 1, color: "#6D73AD" }}
+            <Box key={tag}>
+              <Button
+                onClick={handleTagButton}
+                style={{ textTransform: "none" }}
               >
-                #
-              </Typography>
-              {tag}
-            </Typography>
+                <Typography variant="p" component="p">
+                  <Typography
+                    variant="span"
+                    component="span"
+                    sx={{ color: "#6D73AD" }}
+                  >
+                    #
+                  </Typography>
+                  {tag}
+                </Typography>
+                <HighlightOffIcon sx={{ width: 15 }} />
+              </Button>
+            </Box>
           ))}
         </Grid>
       </Grid>
-      <Button />
     </Container>
   );
 }

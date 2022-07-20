@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions } from "@mui/material";
-import FavoriteBorderSharpIcon from "@mui/icons-material/FavoriteBorderSharp";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import Tags from "../../components/tag/Tags";
 
 export default function QnaBook({ title, tags, heartCount }) {
@@ -19,7 +19,7 @@ export default function QnaBook({ title, tags, heartCount }) {
           </Typography>
         </CardContent>
         <CardActions>
-          <FavoriteBorderSharpIcon sx={{ color: "red" }} />
+          <FavoriteIcon sx={{ color: "red" }} />
           {heartCount}
         </CardActions>
       </CardActionArea>
