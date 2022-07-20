@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Qna from "../../components/qna/QnA";
+import QnaAddModal from "../../components/qna/QnaAddModal";
 
 function QnaBookDetailPage() {
   return (
@@ -70,17 +71,7 @@ function QnaBookDetailPage() {
           padding: "3px",
         }}
       >
-        <Button
-          fullWidth
-          sx={{
-            backgroundColor: "#E3EFF6",
-            color: "#6D73AD",
-            border: "solid #F5GGG9 1px",
-            padding: 1,
-          }}
-        >
-          새 Q&A 추가
-        </Button>
+        <QnaAddModal title={"title"} />
       </Container>
       <Container>
         <Qna />

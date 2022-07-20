@@ -14,7 +14,10 @@ export default function QnaBookEditPage({ qnaBookId }) {
   const [isPublic, setIsPublic] = React.useState(true);
   const [tag, setTag] = React.useState("");
   const [tags, setTags] = React.useState([]);
-  const [first, setFirst] = React.useState(true);
+
+  React.useEffect(() => {
+    getQnaBookInfo();
+  }, []);
 
   const getQnaBookInfo = () => {
     // qnaBookId로 api 만들어서 title, isPublic, tags 가져오기
@@ -22,7 +25,6 @@ export default function QnaBookEditPage({ qnaBookId }) {
     setTitle("title");
     setIsPublic(true);
     setTags(["tag1", "tag2"]);
-    setFirst(false);
   };
 
   const handleIsPublicField = (event) => {
@@ -75,9 +77,9 @@ export default function QnaBookEditPage({ qnaBookId }) {
     );
   };
 
-  if (first) {
+  React.useEffect(() => {
     getQnaBookInfo();
-  }
+  }, []);
 
   return (
     <Container>
