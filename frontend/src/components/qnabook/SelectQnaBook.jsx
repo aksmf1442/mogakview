@@ -9,7 +9,7 @@ import Tags from "../../components/tag/Tags";
 export default function SelectQnaBook({ title, tags, heartCount }) {
   return (
     <Card>
-      <CardContent>
+      <CardContent style={{ textTransform: "none" }}>
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>

@@ -65,7 +65,7 @@ function QuizPage() {
           animation="slide"
           navButtonsAlwaysVisible={true}
           cycleNavigation={false}
-          NavButton={({ onClick, className, style, next, prev }) => {
+          NavButton={({ onClick, style, next, prev }) => {
             return (
               <Button
                 onClick={(e) => {
@@ -92,7 +92,11 @@ function QuizPage() {
               flipDirection="vertical"
               key={idx}
             >
-              <Button className="front" onClick={handleCardClick}>
+              <Button
+                className="front"
+                onClick={handleCardClick}
+                style={{ textTransform: "none" }}
+              >
                 <Box sx={{ width: "60vw", height: "50vh" }}>
                   <Typography variant="h5">{qnaBook.title}</Typography>
                   <Typography variant="h6">Q.</Typography>
@@ -115,7 +119,11 @@ function QuizPage() {
                   </Box>
                 </Box>
               </Button>
-              <Button className="back" onClick={handleCardClick}>
+              <Button
+                className="back"
+                onClick={handleCardClick}
+                style={{ textTransform: "none" }}
+              >
                 <Box sx={{ width: "60vw", height: "50vh" }}>
                   <Typography variant="h5">{qnaBook.title}</Typography>
                   <Typography variant="h6">A.</Typography>
