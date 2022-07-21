@@ -7,6 +7,7 @@ import QuizSettingPage from "./views/quiz/QuizSettingPage";
 import QnaBookDetailPage from "./views/qnabook/QnaBookDetailPage";
 import QnaBookEditPage from "./views/qnabook/QnaBookEditPage";
 import QuizPage from "./views/quiz/QuizPage";
+import QuizResultPage from "./views/quiz/QuizResultPage";
 
 function App() {
   return (
@@ -15,8 +16,9 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/quizSetting" element={<QuizSettingPage />} />
           <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/quizResult" element={<QuizResultPage />} />
+          <Route path="/quizSetting" element={<QuizSettingPage />} />
           <Route path="/qnabookAdd" element={<QnaBookAddPage />} />
           <Route path="/qnabookEdit" element={<QnaBookEditPage />} />
           {/* 테스트용 라우터 */}

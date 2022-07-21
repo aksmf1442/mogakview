@@ -87,6 +87,7 @@ export default function FullScreenDialog({ title }) {
               onChange={(e) => {
                 setQuestion(e.target.value);
               }}
+              minRows={15}
               maxRows={15}
               placeholder="이곳에 글을 적어주세요!"
               style={{ width: "100%", border: "none", outline: "none" }}
@@ -110,6 +111,7 @@ export default function FullScreenDialog({ title }) {
               onChange={(e) => {
                 setAnswer(e.target.value);
               }}
+              minRows={15}
               maxRows={15}
               placeholder="이곳에 글을 적어주세요!"
               style={{
