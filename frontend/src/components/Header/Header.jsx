@@ -17,7 +17,7 @@ import { LoginModal } from "../index";
 const profile = "프로필";
 const login = "로그인";
 const pages = ["면접준비", "퀴즈준비", "새글쓰기"];
-const pageNav = ["/", "/quiz", "/qnabookAdd"];
+const pageNav = ["/", "/quizSetting", "/qnabookAdd"];
 
 function Header() {
   const navigate = useNavigate();

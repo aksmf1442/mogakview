@@ -3,9 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LandingPage, OauthCallbackPage } from "./views";
 import { Header } from "./components";
 import QnaBookAddPage from "./views/qnabook/QnaBookAddPage";
-import QuizPage from "./views/quiz/QuizPage";
+import QuizSettingPage from "./views/quiz/QuizSettingPage";
 import QnaBookDetailPage from "./views/qnabook/QnaBookDetailPage";
 import QnaBookEditPage from "./views/qnabook/QnaBookEditPage";
+import QuizPage from "./views/quiz/QuizPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/quizSetting" element={<QuizSettingPage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/qnabookAdd" element={<QnaBookAddPage />} />
           <Route path="/qnabookEdit" element={<QnaBookEditPage />} />
