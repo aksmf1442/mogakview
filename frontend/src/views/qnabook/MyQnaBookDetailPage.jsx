@@ -7,41 +7,8 @@ import Box from "@mui/material/Box";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Qna from "../../components/qna/QnA";
 import QnaAddModal from "../../components/qna/QnaAddModal";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import ToggleButton from "@mui/material/ToggleButton";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import { CardActions } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import { styled } from "@mui/material/styles";
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  "& .MuiToggleButtonGroup-grouped": {
-    margin: theme.spacing(0.5),
-    border: 0,
-    "&.Mui-disabled": {
-      border: 0,
-    },
-    "&:not(:first-of-type)": {
-      borderRadius: theme.shape.borderRadius,
-    },
-    "&:first-of-type": {
-      borderRadius: theme.shape.borderRadius,
-    },
-  },
-}));
 
 function MyQnaBookDetailPage() {
-  const text =
-    "quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quizquiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quizquiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quizquiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz quiz";
-
-  const [formats, setFormats] = React.useState(() => [""]);
-
-  const handleFormat = (event, newFormats) => {
-    console.log(newFormats);
-    setFormats(newFormats);
-  };
-
   return (
     <Container>
       <Grid
