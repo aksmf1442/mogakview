@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { LoginModal } from "../index";
+import { LoginModal, ProfileModal } from "../index";
 
 const profile = "프로필";
 const login = "로그인";
@@ -23,8 +23,11 @@ function Header() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [isLogin, setIsLogin] = React.useState(false);
+  // const [isLogin, setIsLogin] = React.useState(false);
+  const [isLogin, setIsLogin] = React.useState(true);
+
   const [loginOpen, setLoginOpen] = React.useState(false);
+  const [profileOpen, setProfileOpen] = React.useState(false);
   // todo: 프로필에 나타낼 이미지 추가해야 함(백엔드에 아직 안만듬)
   const [userInfo, setUserInfo] = React.useState({
     userId: null,
@@ -74,6 +77,19 @@ function Header() {
     }
   };
 
+  const handleProfileEdit = () => {
+    setProfileOpen(true);
+    handleMenuClose();
+  };
+
+  const handleProfileClose = () => {
+    setProfileOpen(false);
+  };
+
+  const handleLogout = () => {
+    handleMenuClose();
+  };
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -91,8 +107,10 @@ function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>PROFILE</MenuItem>
-      <MenuItem onClick={handleMenuClose}>LOGOUT</MenuItem>
+      <MenuItem onClick={handleProfileEdit}>
+        <ProfileModal open={profileOpen} onClose={handleProfileClose} />
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
     </Menu>
   );
   const mobileMenuId = "primary-search-account-menu-mobile";
@@ -157,6 +175,21 @@ function Header() {
           </Button>
         </MenuItem>
       ))}
+      {isLogin && (
+        <MenuItem>
+          <Button
+            // onClick={handleCloseNavMenu}
+            size="large"
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+            sx={{ color: "#6D73AD" }}
+          >
+            로그아웃
+          </Button>
+        </MenuItem>
+      )}
     </Menu>
   );
 
@@ -204,17 +237,9 @@ function Header() {
               </Button>
             ))}
             {isLogin && (
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="#6D73AD"
-              >
+              <Button onClick={handleProfileMenuOpen}>
                 <AccountCircle />
-              </IconButton>
+              </Button>
             )}
             {!isLogin && (
               <Button
@@ -240,6 +265,7 @@ function Header() {
         </Toolbar>
       </AppBar>
       <LoginModal open={loginOpen} onClose={handleLoginClose} />
+      {/* <ProfileModal open={profileOpen} onClose={handleProfileClose} /> */}
       {renderMobileMenu}
       {renderMenu}
     </Box>
