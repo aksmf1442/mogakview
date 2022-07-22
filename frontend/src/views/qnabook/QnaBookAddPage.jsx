@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -8,15 +9,18 @@ import FormGroup from "@mui/material/FormGroup";
 import Switch from "@mui/material/Switch";
 import Button from "@mui/material/Button";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import postQnaBookApi from "../../api/qnabook/postQnaBookApi";
 
 export default function QnaBookAddPage() {
+  const navigate = useNavigate();
+
   const [title, setTitle] = React.useState("");
-  const [isPublic, setIsPublic] = React.useState(true);
+  const [opened, setOpened] = React.useState(true);
   const [tag, setTag] = React.useState("");
   const [tags, setTags] = React.useState([]);
 
-  const handleIsPublicField = (event) => {
-    setIsPublic(event.target.checked);
+  const handleOpenedField = (event) => {
+    setOpened(event.target.checked);
   };
 
   const handleTitleField = (event) => {
@@ -51,15 +55,17 @@ export default function QnaBookAddPage() {
 
   const handleQnaBookAddButtonOnClick = () => {
     // qnaBook add api 추가해야함
-    //title, isPublic, tags
+    //title, opened, tags
+    postQnaBookApi({ opened, title, tags });
+    navigate("/test");
   };
 
   const SwitchLabels = () => {
     return (
       <FormGroup>
         <FormControlLabel
-          control={<Switch checked={isPublic} onChange={handleIsPublicField} />}
-          label={isPublic ? "public" : "private"}
+          control={<Switch checked={opened} onChange={handleOpenedField} />}
+          label={opened ? "public" : "private"}
         />
       </FormGroup>
     );

@@ -11,7 +11,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 export default function QnaBookEditPage({ qnaBookId }) {
   const [title, setTitle] = React.useState("");
-  const [isPublic, setIsPublic] = React.useState(true);
+  const [opened, setOpened] = React.useState(true);
   const [tag, setTag] = React.useState("");
   const [tags, setTags] = React.useState([]);
 
@@ -20,15 +20,15 @@ export default function QnaBookEditPage({ qnaBookId }) {
   }, []);
 
   const getQnaBookInfo = () => {
-    // qnaBookId로 api 만들어서 title, isPublic, tags 가져오기
+    // qnaBookId로 api 만들어서 title, opened, tags 가져오기
     // const qnaBook = getQnaBookApi();
     setTitle("title");
-    setIsPublic(true);
+    setOpened(true);
     setTags(["tag1", "tag2"]);
   };
 
-  const handleIsPublicField = (event) => {
-    setIsPublic(event.target.checked);
+  const handleOpenedField = (event) => {
+    setOpened(event.target.checked);
   };
 
   const handleTitleField = (event) => {
@@ -63,15 +63,15 @@ export default function QnaBookEditPage({ qnaBookId }) {
 
   const handleQnaBookAddButtonOnClick = () => {
     // qnaBook add api 추가해야함
-    //title, isPublic, tags
+    //title, opened, tags
   };
 
   const SwitchLabels = () => {
     return (
       <FormGroup>
         <FormControlLabel
-          control={<Switch checked={isPublic} onChange={handleIsPublicField} />}
-          label={isPublic ? "public" : "private"}
+          control={<Switch checked={opened} onChange={handleOpenedField} />}
+          label={opened ? "public" : "private"}
         />
       </FormGroup>
     );

@@ -13,6 +13,8 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { LoginModal, ProfileModal } from "../index";
+import getUserInfoApi from "../../api/user/getUserInfoApi";
+import logoutApi from "../../api/auth/logoutApi";
 
 const profile = "프로필";
 const login = "로그인";
@@ -24,7 +26,6 @@ function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLogin, setIsLogin] = React.useState(false);
-
   const [loginOpen, setLoginOpen] = React.useState(false);
   const [profileOpen, setProfileOpen] = React.useState(false);
   // todo: 프로필에 나타낼 이미지 추가해야 함(백엔드에 아직 안만듬)
@@ -86,8 +87,23 @@ function Header() {
   };
 
   const handleLogout = () => {
+    // todo
+    // acessToken 로컬 스토리지에서 파기, and redux에서 UserInfo 날리기
+    logoutApi();
+    setIsLogin(false);
     handleMenuClose();
   };
+
+  const getUserInfo = async () => {
+    // todo
+    // userInfo가 비어있을 경우
+    // accessToken localStorage에서 꺼내서 null이 아니면 일단 넘기고 유효하다면 바꿈
+    // const user = await getUserInfoApi("asdf");
+  };
+
+  React.useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -264,7 +280,6 @@ function Header() {
         </Toolbar>
       </AppBar>
       <LoginModal open={loginOpen} onClose={handleLoginClose} />
-      {/* <ProfileModal open={profileOpen} onClose={handleProfileClose} /> */}
       {renderMobileMenu}
       {renderMenu}
     </Box>

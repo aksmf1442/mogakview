@@ -110,12 +110,12 @@ export default function SearchOption() {
   const [qnaBookId, setQnaBookId] = React.useState("");
 
   const getQnaBooks = async () => {
-    const qnaBooks = await getSearchQnaBooksApi({
-      sort,
-      where,
-      query: resultQuery,
-      qnaBookId,
-    });
+    // const qnaBooks = await getSearchQnaBooksApi({
+    //   sort,
+    //   where,
+    //   query: resultQuery,
+    //   qnaBookId,
+    // });
     // qnaBooks를 리덕스로 빼기
     // 백엔드에서 API 만든 후에 적용하자.
   };
